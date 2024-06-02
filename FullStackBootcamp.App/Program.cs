@@ -1,15 +1,26 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
+using FullStackBootcamp.App.OOPConcepts.Abstraction;
 using FullStackBootcamp.App.OOPConcepts.Inheritance;
 
 Console.WriteLine("Hello, World!");
 
 
-var person = new Person();
+var orderModule = new OrderModule(new StockRepositoryWithOracle());
+orderModule.Create(new Order());
 
 
-var teacher = new Teacher();
+IWriteProductRepository writeProductRepository = new WriteProductRepositoryWithSqlServer();
+
+
+IReadProductRepository readProductRepository = new ReadProductRepositoryWithSqlSever();
+
+
+//var person = new Person();
+
+
+//var teacher = new Teacher();
 //teacher.X = "r";
 //var loop = new Loop();
 

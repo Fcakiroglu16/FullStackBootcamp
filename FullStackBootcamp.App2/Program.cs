@@ -4,23 +4,27 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        Pen pen1 = new Pen();
-
-        pen1.Height = 100;
-        pen1.Width = 200;
-        pen1.Color = "red";
-
-        int value = 500;
-        Console.WriteLine($"Value:{value}");
-        Write2(value);
-        Console.WriteLine($"Value:{value}");
-        Console.WriteLine($"Width:{pen1.Width}");
-        Write(pen1);
+        var c = new C();
+        c.Method();
 
 
-        Console.WriteLine($"Width:{pen1.Width}");
+        //Pen pen1 = new Pen();
 
-        Console.WriteLine("Hello, World!");
+        //pen1.Height = 100;
+        //pen1.Width = 200;
+        //pen1.Color = "red";
+
+        //int value = 500;
+        //Console.WriteLine($"Value:{value}");
+        //Write2(value);
+        //Console.WriteLine($"Value:{value}");
+        //Console.WriteLine($"Width:{pen1.Width}");
+        //Write(pen1);
+
+
+        //Console.WriteLine($"Width:{pen1.Width}");
+
+        //Console.WriteLine("Hello, World!");
     }
 
 
