@@ -19,6 +19,7 @@ namespace FullStackBootcamp.App.OOPConcepts.Abstraction
             _stockModule = stockModule;
         }
 
+
         public void Create(Order newOrder)
         {
             var hasStock = _stockModule.CheckStock(1, 2);

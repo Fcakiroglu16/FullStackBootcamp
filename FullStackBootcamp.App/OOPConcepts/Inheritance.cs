@@ -1,4 +1,6 @@
-﻿namespace FullStackBootcamp.App.OOPConcepts.Inheritance
+﻿using FullStackBootcamp.App.Constructors;
+
+namespace FullStackBootcamp.App.OOPConcepts.Inheritance
 {
     public class Person
     {

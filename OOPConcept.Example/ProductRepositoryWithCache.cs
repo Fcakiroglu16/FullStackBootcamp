@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FullStackBootcamp.App.OOPConcepts.Abstraction
+namespace OOPConcept.Example
 {
-    internal class StockRepositoryWithOracle : IStockRepository
+    internal class ProductRepositoryWithCache : IProductRepository
     {
-        public void DecreaseStock(int productId, int count)
+        public int Save(Product newProduct)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckStock(int productId, int count)
+        public bool Any(int productId)
         {
             throw new NotImplementedException();
         }
 
-        public void GetById()
+        public List<Product> GetProducts()
         {
             throw new NotImplementedException();
         }
