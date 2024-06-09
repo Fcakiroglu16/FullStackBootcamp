@@ -2,9 +2,9 @@
 {
     public enum SalaryType
     {
-        Manager,
-        Developer,
-        Tester
+        Manager = 1,
+        Developer = 2,
+        Tester = 3
     }
 
 

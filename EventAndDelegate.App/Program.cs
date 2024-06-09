@@ -1,13 +1,93 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+
 using EventAndDelegate.App;
 
 Console.WriteLine("Delegate And Events");
 
 
-SuperSalaryCalculator superSalaryCalculator = new SuperSalaryCalculator();
+var categoryRepository = new CategoryRepository();
 
-superSalaryCalculator.GoodCalculate(100, 2, SalaryCalculator.TesterCalculate);
+categoryRepository.SetThresholdCategoryCount(3);
+
+categoryRepository.ThresholdCategoryCountEvent += CategoryRepository_ThresholdCategoryCountEvent;
+
+
+categoryRepository.ThresholdCategoryCountEvent += CategoryRepository_ThresholdCategoryCountEvent1;
+
+
+void CategoryRepository_ThresholdCategoryCountEvent(object? sender, int categoryCount)
+{
+    if (categoryCount >= 4)
+    {
+        throw new Exception("hata var sayı 4 oldu");
+    }
+
+    Console.WriteLine($"kategori sayısı eşik değerini({categoryCount}) aştı(1)");
+}
+
+
+void CategoryRepository_ThresholdCategoryCountEvent1(object? sender, int categoryCount)
+{
+    Console.WriteLine($"kategori sayısı eşik değerini({categoryCount}) aştı(2)");
+}
+
+
+var category = new Category() { Id = 20, Name = "kalem 20" };
+categoryRepository.Add(category);
+categoryRepository.Add(category);
+categoryRepository.Add(category);
+categoryRepository.Add(category);
+categoryRepository.Add(category);
+
+//var productEvent = new ProductEvent("kalem 1", 100);
+
+//productEvent.ProductChangedEvent += ProductEventProductChangedEvent;
+
+//void ProductEventProductChangedEvent(object? sender, decimal price)
+//{
+//    Console.WriteLine($"Product Changed. current Value:  {price}");
+//}
+
+//productEvent.ChangePrice(600);
+
+
+//var person = new Person();
+
+//person.FirstName = "ahmet";
+//person.LastName = "yıldız";
+//person.ProfilePictureUrl = "https://url.com";
+
+//person.ProfilePictureChanged += (pictureUrl) => { Console.WriteLine($"url değiştir :{pictureUrl}"); };
+
+
+//var product = new Product();
+
+//product.StockCountEvent += Product_StockCountEvent;
+
+//void Product_StockCountEvent(int stock)
+//{
+//    Console.WriteLine("Stock is not enough");
+//}
+
+//for (int i = 1; i < 30; i++)
+//{
+//    product.Stock = i;
+//    Console.WriteLine(product.Stock);
+//    //if (product.StockCount >= product.Stock)
+//    //{
+//    //Console.WriteLine("Stock is enough");
+//    //}
+//    //else
+//    //{
+//    //    Console.WriteLine("Stock is not enough");
+//    //}
+//}
+
+
+//SuperSalaryCalculator superSalaryCalculator = new SuperSalaryCalculator();
+
+//superSalaryCalculator.GoodCalculate(100, 2, SalaryCalculator.TesterCalculate);
 
 
 //var salaryCalculator = new SalaryCalculator();
