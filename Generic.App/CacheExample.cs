@@ -1,4 +1,6 @@
-﻿namespace Generic.App
+﻿using System.Numerics;
+
+namespace Generic.App
 {
     internal class CacheGeneric<T, T2> where T : class
     {
