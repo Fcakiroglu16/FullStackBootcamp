@@ -11,6 +11,8 @@ numbers2.AddLast(10);
 numbers2.AddLast(20);
 numbers2.AddLast(30);
 numbers2.AddLast(5);
+
+numbers.
 foreach (var number in numbers2.GetRandomList())
 {
     Console.WriteLine(number);
