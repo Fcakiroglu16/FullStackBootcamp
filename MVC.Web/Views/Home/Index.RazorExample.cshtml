@@ -1,0 +1,72 @@
+﻿
+@{
+    var  names= new List<string> { "Ahmet", "Mehmet", "Ali" };
+    var year = DateTime.Now.Year;
+    var nowDate = DateTime.Now;
+    int number = 10;
+}
+@{
+    
+    ViewData["Title"] = "Home Page";
+}
+
+@functions
+{
+    string GetFullName(string firstName, string lastName)
+    {
+        
+        return firstName + " " + lastName;
+    }
+
+    List<int> numbers = [1, 2, 3, 4, 5];
+}
+
+<script></script>
+<style>
+
+</style>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<h1>ahmet@@outlook.com</h1>
+<h1>tarih : @DateTime.Now</h1>
+<h2>tarih : @nowDate</h2>
+<h1>it is @DateTime.Now.Hour</h1>
+// ternary => ? :
+<h1>@(DateTime.Now.Hour > 12 ? "Good Afternoon" : "Good Morning")</h1>
+
+@if(DateTime.Now.Hour>12)
+{
+    <h1>Good Afternoon</h1>
+}
+else
+{
+    <h1>Good Morning</h1>
+}
+
+<h1>@GetFullName("ahmet","yıldız")</h1>
+
+@foreach (var name in names)
+{
+
+    @:ABC
+
+    <text>ABC</text>
+    
+
+    <h1> name:  @name</h1>
+}
+
+@if(year>2023)
+{
+    <text>ABC</text>
+    <h1>2023 den büyük</h1>
+}
+else
+{
+    <h1>2023 den küçük</h1>
+}
+
+
+
