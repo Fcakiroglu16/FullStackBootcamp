@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@Html.ActionLink("go to article","Index","Article",routeValues:new {Id=10, Title="AspNet Core" })
+
+<a  asp-controller="Article" asp-action="Index" asp-route-id="5" asp-route-title="aspNet Core">Go to  article(by tag helper)</a>
+
+
+<environment include="Development">
+    <p>Development  ortamlarda buradaki yazı gözüksün</p>
+
+</environment>
+
+<environment exclude="Development">
+    <p>Development harici ortamlarda buradaki yazı gözüksün</p>
+
+</environment>
+
+<environment names="Development,Staging">
+    <p>Development/Staging  ortamlarda buradaki yazı gözüksün</p>
+</environment>
+
+<h2>
+    Custom Tag Helpers
+</h2>
+<thumbnail-image src="@ViewBag.imageUrl"></thumbnail-image>
+<img src="@ViewBag.imageUrl"/>
+
+@* <img src="@ViewBag.thumbnailUrl" /> *@
+
+<thumb-nail-image url="@ViewBag.imageUrl"></thumb-nail-image>
