@@ -28,4 +28,8 @@
     <Folder Include="Pages\NewFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CustomTagHelpers.Library\CustomTagHelpers.Library.csproj" />
+  </ItemGroup>
+
 </Project>
