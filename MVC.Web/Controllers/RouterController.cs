@@ -23,7 +23,7 @@ namespace MVC.Web.Controllers
             return View();
         }
 
-        [Route("{id}")]
+        [Route("{id:int}")]
         public IActionResult Get(int id)
         {
             ViewBag.id = id;

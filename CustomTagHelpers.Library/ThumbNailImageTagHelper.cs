@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace MVC.Web.CustomTagHelpers
+namespace CustomTagHelpers.Library
 {
     public class ThumbNailImageTagHelper : TagHelper
     {

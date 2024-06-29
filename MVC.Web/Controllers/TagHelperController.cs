@@ -16,6 +16,9 @@ namespace MVC.Web.Controllers
 
             ViewBag.imageUrl = imageUrl;
             ViewBag.thumbnailUrl = thumbnailUrl;
+
+
+            ViewBag.names = new List<string>() { "ahmet", "hasan", "ali" };
             return View();
         }
     }

@@ -1,7 +1,10 @@
-﻿@using MVC.Web.CustomTagHelpers
-
+﻿@using CustomTagHelpers.Library
 @{
+
+    var nameAsList = ViewBag.names as List<string>;
     ViewData["Title"] = "Index";
+
+   
 }
 
 <h1>Index</h1>
@@ -27,9 +30,25 @@
 <h2>
     Custom Tag Helpers
 </h2>
-<thumbnail-image src="@ViewBag.imageUrl"></thumbnail-image>
+
+
+@* <ul>
+
+    @foreach (var name in (ViewBag.names as List<string>)!)
+    {
+        <li>@name</li>
+    }
+</ul> *@
+<show-name-as-list names="@nameAsList"></show-name-as-list>
+
+
+<thumb-nail-image url="@ViewBag.imageUrl"></thumb-nail-image>
 <img src="@ViewBag.imageUrl"/>
 
 @* <img src="@ViewBag.thumbnailUrl" /> *@
 
-<thumb-nail-image url="@ViewBag.imageUrl" dimension="250x250"></thumb-nail-image>
+
+
+
+
+
