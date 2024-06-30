@@ -1,4 +1,7 @@
-﻿namespace MVC.Web.Models.Products
+﻿using System.Net.Sockets;
+using MVC.Web.Models.ViewModels;
+
+namespace MVC.Web.Models.Products
 {
     public interface IProductRepository
     {
@@ -10,8 +13,21 @@
 
     public class ProductRepository : IProductRepository
     {
-        private static List<Product> ProductList { get; set; } = new();
+        private static List<Product> ProductList { get; set; } =
+        [
+            new()
+            {
+                CategoryId = 1, Description = "abc", IsPublisher = true, Name = "a", PublisherDurationId = 1, Id = 100,
+                Price = 200, StockCount = 20, PictureUrl = ""
+            }
+        ];
 
+        private static readonly List<SelectModel> PublishDurationList =
+        [
+            new("3 ay", "1"),
+            new("6 ay", "2"),
+            new("9 ay", "3")
+        ];
 
         //crud methods
         public void Add(Product product)
@@ -44,6 +60,21 @@
         public List<Product> GetAll()
         {
             return ProductList;
+        }
+
+        public Product? GetById(int id)
+        {
+            return ProductList.FirstOrDefault(x => x.Id == id);
+        }
+
+        public List<SelectModel> GetPublishDuration()
+        {
+            return PublishDurationList;
+        }
+
+        public string GetPublishDurationKey(string value)
+        {
+            return PublishDurationList.FirstOrDefault(x => x.Value == value)!.Text;
         }
     }
 }

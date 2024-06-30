@@ -1,4 +1,6 @@
-﻿namespace MVC.Web.Models.Products
+﻿using System.Security.Policy;
+
+namespace MVC.Web.Models.Products
 {
     public class Product
     {
@@ -9,6 +11,10 @@
         public int StockCount { get; set; }
 
         public string? PictureUrl { get; set; }
+
+        public bool IsPublisher { get; set; }
+
+        public int PublisherDurationId { get; set; }
         public int CategoryId { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using MVC.Web.Models;
-
-namespace Razor.Web.Models.Categories
+﻿namespace Razor.Web.Models.Categories
 {
     public class CategoryService
     {

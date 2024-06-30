@@ -1,29 +1,33 @@
-﻿using Razor.Web.Models.Products.ViewModels;
+﻿using Razor.Web.Models.Categories;
+using Razor.Web.Models.Products.ViewModels;
+using Razor.Web.Pages.Forms;
 
 namespace Razor.Web.Models.Products
 {
     public class ProductService
     {
         private ProductRepository productRepository;
+        private CategoryRepository categoryRepository;
 
 
         public ProductService()
         {
             productRepository = new ProductRepository();
+            categoryRepository = new CategoryRepository();
         }
 
 
-        public void Create(ProductCreateWrapperModel model)
+        public void Create(CreateProductModel model)
         {
             var product = new Product
             {
                 Id = new Random().Next(1, 10000),
-                Name = model.ProductViewModel.Name,
-                Price = model.ProductViewModel.Price,
-                StockCount = model.ProductViewModel.StockCount,
-                Description = model.ProductViewModel.Description,
-                CategoryId = model.CategoryViewModel.CategoryId,
-                PictureUrl = model.ProductViewModel.PictureUrl
+                Name = model.ProductCreateViewModel.Name,
+                Price = model.ProductCreateViewModel.Price,
+                StockCount = model.ProductCreateViewModel.StockCount,
+                Description = model.ProductCreateViewModel.Description,
+                CategoryId = model.CategoryCreateViewModel.CategoryId,
+                PictureUrl = model.ProductCreateViewModel.PictureUrl
             };
 
             productRepository.Add(product);
@@ -57,7 +61,7 @@ namespace Razor.Web.Models.Products
                 Price = x.Price,
                 StockCount = x.StockCount,
                 Description = x.Description,
-                //CategoryName = x.CategoryName,
+                CategoryName = categoryRepository.GetById(x.CategoryId)!.Name,
                 PictureUrl = x.PictureUrl
             }).ToList();
         }

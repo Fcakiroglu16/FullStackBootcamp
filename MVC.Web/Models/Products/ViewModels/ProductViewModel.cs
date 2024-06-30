@@ -9,6 +9,10 @@
         public string? Description { get; set; }
 
         public string? PictureUrl { get; set; }
+
+        public bool IsPublisher { get; set; }
+
+        public string PublishDuration { get; set; }
         public string CategoryName { get; set; } = default!;
     }
 }

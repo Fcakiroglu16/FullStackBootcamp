@@ -1,0 +1,47 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Razor.Web.Models.Products.ViewModels
+@model Razor.Web.Pages.Forms.CreateProductModel
+@{
+}
+
+
+<form  method="post">
+    
+
+    <div class="mb-3">
+        <label asp-for="CategoryCreateViewModel.CategorySelectList"  class="form-label"></label>
+        @*   <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi"> *@
+        
+        <select class="form-control" asp-for="CategoryCreateViewModel.CategoryId" asp-items="Model.CategoryCreateViewModel.CategorySelectList"></select>
+    </div>
+    
+
+    <div class="mb-3">
+        <label asp-for="ProductCreateViewModel.Name"  class="form-label"></label>
+        <input class="form-control" asp-for="ProductCreateViewModel.Name" placeholder="ürün ismi">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductCreateViewModel.Price" class="form-label"></label>
+        <input class="form-control" asp-for="ProductCreateViewModel.Price" placeholder="ürün fiyat">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductCreateViewModel.Description" class="form-label"></label>
+        <input class="form-control" asp-for="ProductCreateViewModel.Description" placeholder="ürün açıklama">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductCreateViewModel.StockCount" class="form-label"></label>
+        <input class="form-control" asp-for="ProductCreateViewModel.StockCount" placeholder="ürün stok adet">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductCreateViewModel.PictureUrl" class="form-label"></label>
+        <input class="form-control" asp-for="ProductCreateViewModel.PictureUrl" placeholder="ürün resim url">
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Kaydet</button>
+    </div>
+</form>

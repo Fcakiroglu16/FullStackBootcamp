@@ -1,92 +1,95 @@
 ﻿
 @{
-    ViewData["Title"] = "CreateProduct";
+    ViewData["Title"] = "UpdateProduct";
 }
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MVC.Web.Models.Products.ViewModels.ProductCreateWrapperModel
+@model MVC.Web.Models.Products.ViewModels.ProductUpdateWrapperModel
 <h1>CreateProduct</h1>
 
-<form asp-controller="Forms" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
-    
-    
+<form asp-controller="Forms" asp-action="UpdateProduct" method="post" enctype="multipart/form-data">
+
+
     <div class="mb-3">
         <label asp-for="ProductViewModel.ImageFile" class="form-label"></label>
-        <input class="form-control"  asp-for="ProductViewModel.ImageFile">
+        <input class="form-control" asp-for="ProductViewModel.ImageFile">
     </div>
-    
+
 
     <div class="mb-3">
-        <label asp-for="CategoryViewModel.CategorySelectList"  class="form-label"></label>
+        <label asp-for="CategoryViewModel.CategorySelectList" class="form-label"></label>
         @*   <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi"> *@
-        
-        <select class="form-control"  asp-for="CategoryViewModel.CategoryId" asp-items="Model.CategoryViewModel.CategorySelectList"></select>
+
+        <select class="form-control" asp-for="CategoryViewModel.CategoryId" asp-items="Model.CategoryViewModel.CategorySelectList"></select>
     </div>
-    
+
 
     <div class="mb-3">
-        <label asp-for="ProductViewModel.Name"  class="form-label"></label>
+        <label asp-for="ProductViewModel.Name" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.Name" placeholder="ürün ismi">
     </div>
-    
+
     <div class="mb-3">
         <label asp-for="ProductViewModel.Price" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.Price" placeholder="ürün fiyat">
     </div>
-    
+
     <div class="mb-3">
         <label asp-for="ProductViewModel.Description" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.Description" placeholder="ürün açıklama">
     </div>
-    
+
     <div class="mb-3">
         <label asp-for="ProductViewModel.StockCount" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.StockCount" placeholder="ürün stok adet">
     </div>
-    
-   @*  <div class="mb-3">
-        <label asp-for="ProductViewModel.PictureUrl" class="form-label"></label>
-        <input class="form-control" asp-for="ProductViewModel.PictureUrl" placeholder="ürün resim url">
+
+    @*  <div class="mb-3">
+    <label asp-for="ProductViewModel.PictureUrl" class="form-label"></label>
+    <input class="form-control" asp-for="ProductViewModel.PictureUrl" placeholder="ürün resim url">
     </div> *@
-    
-    
+
+
     <div class="form-check">
-        <input class="form-check-input"  asp-for="ProductViewModel.IsPublish">
+        <input class="form-check-input" asp-for="ProductViewModel.IsPublish">
         <label class="form-check-label" asp-for="ProductViewModel.IsPublish">
-          
+
         </label>
     </div>
-    
+
     <div>
-        
+
         @foreach (var isPublisherDuration in Model.ProductViewModel.IsPublisherDurationList)
         {
 
+
             <div class="form-check">
-                <input asp-for="ProductViewModel.IsPublisherDurationId"  class="form-check-input" type="radio" value="@isPublisherDuration.Value">
+                <input   asp-for="ProductViewModel.IsPublisherDurationId" class="form-check-input" type="radio" value="@isPublisherDuration.Value" checked=@(Model.ProductViewModel.IsPublisherChecked(isPublisherDuration.Value))>
+               
+                
                 <label class="form-check-label" for="flexRadioDefault2">
                     @isPublisherDuration.Text
                 </label>
             </div>
         }
-        
+
 
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div>
-       <button class="btn btn-primary" type="submit">Kaydet</button>
+        <button class="btn btn-primary" type="submit">Güncelle</button>
     </div>
 </form>
 

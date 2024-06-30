@@ -25,13 +25,25 @@
             <th>
                 PictureUrl
             </th>
+            
+            <th>
+                IsPublisher
+            </th>
+            <th>Publish Duration</th>
             <th>Category Name</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    <img style="width: 100px; height: 100px;"  src="/pictures/@item.PictureUrl"/>
+                 
+                </td>
+                
+
                 <td>
                     @item.Name
                 </td>
@@ -44,11 +56,22 @@
                 <td>
                     @item.StockCount
                 </td>
+
                 <td>
-                    @item.PictureUrl
+                    @item.IsPublisher
+                </td>
+                <td>
+                    @item.PublishDuration
                 </td>
                 <td>
                     @item.CategoryName
+                </td>
+                <td>
+                    
+                    <a asp-controller="Forms" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    
+                    
+                    <a asp-controller="Forms" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</a>
                 </td>
             </tr>
         }

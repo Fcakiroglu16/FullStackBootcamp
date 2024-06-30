@@ -6,6 +6,10 @@
 
         public string Name { get; set; }
 
+        public CategoryViewModel()
+        {
+        }
+
         public CategoryViewModel(int id, string name)
         {
             Id = id;

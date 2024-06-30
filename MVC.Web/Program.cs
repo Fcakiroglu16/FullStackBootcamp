@@ -1,7 +1,12 @@
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// virtual path/ reference path
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 
 var app = builder.Build();
@@ -22,19 +27,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
-// Route value=  products/update/1 => route data
-// Query value=  products/update?id=1 => query string
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{productId?}");
-
-//app.MapControllerRoute(name: "paging", pattern: "{controller}/{action}/{page}/{pageSize}");
 
 app.Run();

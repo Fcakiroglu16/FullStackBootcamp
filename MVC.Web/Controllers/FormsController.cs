@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Primitives;
-using MVC.Web.Models.Categories;
 using MVC.Web.Models.Products;
 using MVC.Web.Models.Products.ViewModels;
 using MVC.Web.Models.Services;
-using MVC.Web.Models.ViewModels;
 
 namespace MVC.Web.Controllers
 {
@@ -13,11 +11,14 @@ namespace MVC.Web.Controllers
     {
         private ProductService productService;
         private CategoryService categoryService;
+        private ProductCreateWrapperModel productCreateWrapperModel;
 
         public FormsController()
         {
             productService = new ProductService();
             categoryService = new CategoryService();
+
+            productCreateWrapperModel = new ProductCreateWrapperModel();
         }
 
         [HttpGet]
@@ -63,15 +64,14 @@ namespace MVC.Web.Controllers
         public IActionResult CreateProduct()
         {
             var categoryViewModelList = categoryService.GetAll();
-
-
-            var productCreteWrapper = new ProductCreateWrapperModel();
-
-
-            productCreteWrapper.CategoryViewModel.CategorySelectList =
+            productCreateWrapperModel.CategoryViewModel.CategorySelectList =
                 new SelectList(categoryViewModelList, "Id", "Name");
 
-            return View(productCreteWrapper);
+            productCreateWrapperModel.ProductViewModel =
+                new ProductCreateViewModel(productService.GetPublishDuration());
+
+
+            return View(productCreateWrapperModel);
         }
 
         [HttpPost]
@@ -81,10 +81,24 @@ namespace MVC.Web.Controllers
             return RedirectToAction(nameof(ProductList), "Forms");
         }
 
+        public IActionResult UpdateProduct(int id)
+        {
+            return View(productService.GetUpdateModel(id));
+        }
+
+
         [HttpGet]
         public IActionResult ProductList()
         {
             return View(productService.GetProducts());
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            productService.Delete(id);
+
+            return RedirectToAction(nameof(ProductList));
         }
     }
 }

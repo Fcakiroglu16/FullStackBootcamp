@@ -1,0 +1,52 @@
+﻿@page
+@model Razor.Web.Pages.Forms.ProductListModel
+
+<a class="btn btn-primary"  asp-page="/Forms/CreateProduct">Create Product</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            StockCount
+        </th>
+        <th>
+            PictureUrl
+        </th>
+        <th>Category Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.ProductViewModels)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                @item.StockCount
+            </td>
+            <td>
+                @item.PictureUrl
+            </td>
+            <td>
+                @item.CategoryName
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

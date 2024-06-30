@@ -13,5 +13,10 @@
         {
             return categoryList;
         }
+
+        public Category? GetById(int id)
+        {
+            return categoryList.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

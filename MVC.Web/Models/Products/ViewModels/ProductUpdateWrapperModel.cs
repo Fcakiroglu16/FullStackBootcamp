@@ -1,24 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Web.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVC.Web.Models.Products.ViewModels
 {
-    public record ProductCreateWrapperModel
+    public class ProductUpdateWrapperModel
     {
-        public ProductCreateViewModel ProductViewModel { get; set; } = new();
-
-        public CategoryCreateViewModel CategoryViewModel { get; set; } = new();
+        public ProductUpdateViewModel ProductViewModel { get; set; } = new();
+        public CategoryUpdateViewModel CategoryViewModel { get; set; } = new();
     }
 
 
-    public record ProductCreateViewModel
+    public record ProductUpdateViewModel
     {
-        public ProductCreateViewModel()
+        public ProductUpdateViewModel()
         {
         }
 
-        public ProductCreateViewModel(List<SelectModel> isPublisherDurationList)
+        public ProductUpdateViewModel(List<SelectModel> isPublisherDurationList)
         {
             IsPublisherDurationList = isPublisherDurationList;
         }
@@ -36,7 +35,7 @@ namespace MVC.Web.Models.Products.ViewModels
 
 
         [Display(Name = "Ürün yayınlanma süresi :")]
-        public List<SelectModel> IsPublisherDurationList { get; set; } = default!;
+        public List<SelectModel> IsPublisherDurationList { get; private set; } = default!;
 
         public int IsPublisherDurationId { get; set; }
 
@@ -60,9 +59,16 @@ namespace MVC.Web.Models.Products.ViewModels
 
         [Display(Name = "Ürün yayınlansın mı? :")]
         public bool IsPublish { get; set; }
+
+
+        public bool IsPublisherChecked(string isPublisherDurationId)
+        {
+            return IsPublisherDurationId.ToString() == isPublisherDurationId;
+        }
     }
 
-    public record CategoryCreateViewModel
+
+    public record CategoryUpdateViewModel
     {
         [Display(Name = "Kategori seç :")] public SelectList CategorySelectList { get; set; } = default!;
 
