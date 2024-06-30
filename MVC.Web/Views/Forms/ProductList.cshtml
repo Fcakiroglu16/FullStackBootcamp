@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "ProductList";
+}
+@model List<ProductViewModel>
+<h1>ProductList</h1>
+<a class="btn btn-primary" asp-controller="Forms" asp-action="CreateProduct">Create Product</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                StockCount
+            </th>
+            <th>
+                PictureUrl
+            </th>
+            <th>Category Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.StockCount
+                </td>
+                <td>
+                    @item.PictureUrl
+                </td>
+                <td>
+                    @item.CategoryName
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

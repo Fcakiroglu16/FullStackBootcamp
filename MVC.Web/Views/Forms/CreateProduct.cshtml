@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "CreateProduct";
+}
+@model ProductCreateWrapperModel
+<h1>CreateProduct</h1>
+
+<form asp-controller="Forms" asp-action="CreateProduct" method="post">
+    
+    <div class="mb-3">
+        <label asp-for="CategoryViewModel.Name"  class="form-label"></label>
+        <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi">
+    </div>
+    
+
+    <div class="mb-3">
+        <label asp-for="ProductViewModel.Name"  class="form-label"></label>
+        <input class="form-control" asp-for="ProductViewModel.Name" placeholder="ürün ismi">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductViewModel.Price" class="form-label"></label>
+        <input class="form-control" asp-for="ProductViewModel.Price" placeholder="ürün fiyat">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductViewModel.Description" class="form-label"></label>
+        <input class="form-control" asp-for="ProductViewModel.Description" placeholder="ürün açıklama">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductViewModel.StockCount" class="form-label"></label>
+        <input class="form-control" asp-for="ProductViewModel.StockCount" placeholder="ürün stok adet">
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="ProductViewModel.PictureUrl" class="form-label"></label>
+        <input class="form-control" asp-for="ProductViewModel.PictureUrl" placeholder="ürün resim url">
+    </div>
+    <div>
+       <button class="btn btn-primary" type="submit">Kaydet</button>
+    </div>
+</form>
+

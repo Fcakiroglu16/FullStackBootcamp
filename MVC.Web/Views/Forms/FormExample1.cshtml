@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "FormExample1";
+}
+@*  Server Side App *@
+<h1>FormExample1</h1>
+
+
+<form asp-controller="Forms" asp-action="FormExample1Post" method="post">
+    
+    <input  name="firstName"/>
+    <hr/>
+    <input name="lastName"/>
+    
+    <hr/>
+    <input name="age"/> 
+    
+    
+    
+    <button type="submit">Kaydet</button>
+
+</form>
+
