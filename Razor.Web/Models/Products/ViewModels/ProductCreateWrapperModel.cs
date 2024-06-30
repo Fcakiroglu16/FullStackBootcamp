@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace MVC.Web.Models
+namespace Razor.Web.Models.Products.ViewModels
 {
     public record ProductCreateWrapperModel
     {
@@ -31,6 +32,12 @@ namespace MVC.Web.Models
 
     public record CategoryCreateViewModel
     {
-        [Display(Name = "Kategori ismi :")] public string Name { get; set; } = default!;
+        [Display(Name = "Kategori seç :")] public SelectList CategorySelectList { get; set; } = default!;
+
+
+        public int CategoryId { get; set; }
+
+
+        //[Display(Name = "Kategori ismi :")] public string Name { get; set; } = default!;
     }
 }

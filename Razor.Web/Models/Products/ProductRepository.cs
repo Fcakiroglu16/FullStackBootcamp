@@ -1,4 +1,4 @@
-﻿namespace MVC.Web.Models.Repositories
+﻿namespace Razor.Web.Models.Products
 {
     public interface IProductRepository
     {
@@ -28,7 +28,7 @@
                 productToUpdate.Price = product.Price;
                 productToUpdate.Description = product.Description;
                 productToUpdate.StockCount = product.StockCount;
-                productToUpdate.CategoryName = product.CategoryName;
+                productToUpdate.CategoryId = product.CategoryId;
             }
         }
 

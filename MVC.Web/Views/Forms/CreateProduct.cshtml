@@ -2,14 +2,17 @@
 @{
     ViewData["Title"] = "CreateProduct";
 }
-@model ProductCreateWrapperModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MVC.Web.Models.Products.ViewModels.ProductCreateWrapperModel
 <h1>CreateProduct</h1>
 
 <form asp-controller="Forms" asp-action="CreateProduct" method="post">
     
     <div class="mb-3">
-        <label asp-for="CategoryViewModel.Name"  class="form-label"></label>
-        <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi">
+        <label asp-for="CategoryViewModel.CategorySelectList"  class="form-label"></label>
+        @*   <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi"> *@
+        
+        <select class="form-control"  asp-for="CategoryViewModel.CategoryId" asp-items="Model.CategoryViewModel.CategorySelectList"></select>
     </div>
     
 

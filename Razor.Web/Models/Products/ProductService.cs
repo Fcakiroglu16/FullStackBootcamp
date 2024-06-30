@@ -1,4 +1,6 @@
-﻿namespace MVC.Web.Models.Repositories
+﻿using Razor.Web.Models.Products.ViewModels;
+
+namespace Razor.Web.Models.Products
 {
     public class ProductService
     {
@@ -20,7 +22,7 @@
                 Price = model.ProductViewModel.Price,
                 StockCount = model.ProductViewModel.StockCount,
                 Description = model.ProductViewModel.Description,
-                CategoryName = model.CategoryViewModel.Name,
+                CategoryId = model.CategoryViewModel.CategoryId,
                 PictureUrl = model.ProductViewModel.PictureUrl
             };
 
@@ -29,13 +31,33 @@
 
         public List<ProductViewModel> GetProducts()
         {
-            return productRepository.GetAll().Select(x => new ProductViewModel()
+            var productList = productRepository.GetAll();
+
+            //List<ProductViewModel> productListViewModel = new List<ProductViewModel>();
+
+            //foreach (var product in productList)
+            //{
+            //    productListViewModel.Add(new ProductViewModel()
+            //    {
+            //        Name = product.Name,
+            //        Price = product.Price,
+            //        StockCount = product.StockCount,
+            //        Description = product.Description,
+            //        CategoryName = product.CategoryName,
+            //        PictureUrl = product.PictureUrl
+            //    });
+            //}
+
+            //return productListViewModel;
+
+
+            return productList.Select(x => new ProductViewModel()
             {
                 Name = x.Name,
                 Price = x.Price,
                 StockCount = x.StockCount,
                 Description = x.Description,
-                CategoryName = x.CategoryName,
+                //CategoryName = x.CategoryName,
                 PictureUrl = x.PictureUrl
             }).ToList();
         }

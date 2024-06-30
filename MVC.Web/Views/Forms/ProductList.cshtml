@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "ProductList";
 }
-@model List<ProductViewModel>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<MVC.Web.Models.Products.ViewModels.ProductViewModel>
 <h1>ProductList</h1>
 <a class="btn btn-primary" asp-controller="Forms" asp-action="CreateProduct">Create Product</a>
 
