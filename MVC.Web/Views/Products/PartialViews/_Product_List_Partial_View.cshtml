@@ -1,0 +1,76 @@
+﻿@model List<MVC.Web.Models.Products.ViewModels.ProductViewModel>
+<h1>ProductList</h1>
+<a class="btn btn-primary" asp-controller="Products" asp-action="Create">Create Product</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>
+            Name
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            StockCount
+        </th>
+
+        <th>
+            IsPublisher
+        </th>
+        <th>Publish Duration</th>
+        <th>Category Name</th>
+        <th>Publish Expire</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img style="width: 100px; height: 100px;"  src="/pictures/@item.PictureUrl"/>
+                 
+            </td>
+                
+
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                @item.StockCount
+            </td>
+
+            <td>
+                @item.IsPublisher
+            </td>
+            <td>
+                @item.PublishDuration
+            </td>
+            <td>
+                @item.CategoryName
+            </td>
+            <td>
+                @item.PublishExpire
+            </td>
+            <td>
+                    
+                <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    
+                    
+                <a asp-controller="Products" asp-action="Update" asp-route-id="@item.Id">Update</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

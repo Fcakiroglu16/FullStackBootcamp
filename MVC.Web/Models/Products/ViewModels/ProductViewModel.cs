@@ -14,5 +14,7 @@
 
         public string PublishDuration { get; set; }
         public string CategoryName { get; set; } = default!;
+
+        public string PublishExpire { get; set; } = default!;
     }
 }

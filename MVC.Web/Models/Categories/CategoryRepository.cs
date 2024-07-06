@@ -1,6 +1,6 @@
 ﻿namespace MVC.Web.Models.Categories
 {
-    public class CategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private static List<Category> categoryList =
         [

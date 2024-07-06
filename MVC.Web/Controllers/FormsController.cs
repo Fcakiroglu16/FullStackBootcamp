@@ -9,18 +9,6 @@ namespace MVC.Web.Controllers
 {
     public class FormsController : Controller
     {
-        private ProductService productService;
-        private CategoryService categoryService;
-        private ProductCreateWrapperModel productCreateWrapperModel;
-
-        public FormsController()
-        {
-            productService = new ProductService();
-            categoryService = new CategoryService();
-
-            productCreateWrapperModel = new ProductCreateWrapperModel();
-        }
-
         [HttpGet]
         public IActionResult FormExample1()
         {
@@ -56,49 +44,7 @@ namespace MVC.Web.Controllers
             #endregion
 
 
-            return View();
-        }
-
-
-        [HttpGet]
-        public IActionResult CreateProduct()
-        {
-            var categoryViewModelList = categoryService.GetAll();
-            productCreateWrapperModel.CategoryViewModel.CategorySelectList =
-                new SelectList(categoryViewModelList, "Id", "Name");
-
-            productCreateWrapperModel.ProductViewModel =
-                new ProductCreateViewModel(productService.GetPublishDuration());
-
-
-            return View(productCreateWrapperModel);
-        }
-
-        [HttpPost]
-        public IActionResult CreateProduct(ProductCreateWrapperModel form)
-        {
-            productService.Create(form);
-            return RedirectToAction(nameof(ProductList), "Forms");
-        }
-
-        public IActionResult UpdateProduct(int id)
-        {
-            return View(productService.GetUpdateModel(id));
-        }
-
-
-        [HttpGet]
-        public IActionResult ProductList()
-        {
-            return View(productService.GetProducts());
-        }
-
-
-        public IActionResult Delete(int id)
-        {
-            productService.Delete(id);
-
-            return RedirectToAction(nameof(ProductList));
+            return RedirectToAction("FormExample1");
         }
     }
 }

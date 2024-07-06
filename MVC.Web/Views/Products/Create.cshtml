@@ -1,12 +1,12 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "CreateProduct";
 }
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MVC.Web.Models.Products.ViewModels.ProductCreateWrapperModel
+
+@model ProductCreateWrapperModel
 <h1>CreateProduct</h1>
 
-<form asp-controller="Forms" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+<form asp-controller="Products" asp-action="Create" method="post" enctype="multipart/form-data">
     
     
     <div class="mb-3">
@@ -19,18 +19,23 @@
         <label asp-for="CategoryViewModel.CategorySelectList"  class="form-label"></label>
         @*   <input class="form-control" asp-for="CategoryViewModel.Name" placeholder="kategori ismi"> *@
         
-        <select class="form-control"  asp-for="CategoryViewModel.CategoryId" asp-items="Model.CategoryViewModel.CategorySelectList"></select>
+        <select class="form-control" asp-for="CategoryViewModel.CategoryId" asp-items="Model.CategoryViewModel.CategorySelectList">
+            <option value="">Kategori seçiniz</option>
+        </select>
+        <span class="text-danger" asp-validation-for="CategoryViewModel.CategoryId"></span>
     </div>
     
 
     <div class="mb-3">
         <label asp-for="ProductViewModel.Name"  class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.Name" placeholder="ürün ismi">
+        <span class="text-danger" asp-validation-for="ProductViewModel.Name"></span>
     </div>
     
     <div class="mb-3">
         <label asp-for="ProductViewModel.Price" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.Price" placeholder="ürün fiyat">
+        <span class="text-danger" asp-validation-for="ProductViewModel.Price"></span>
     </div>
     
     <div class="mb-3">
@@ -41,13 +46,8 @@
     <div class="mb-3">
         <label asp-for="ProductViewModel.StockCount" class="form-label"></label>
         <input class="form-control" asp-for="ProductViewModel.StockCount" placeholder="ürün stok adet">
+        <span class="text-danger" asp-validation-for="ProductViewModel.StockCount"></span>
     </div>
-    
-   @*  <div class="mb-3">
-        <label asp-for="ProductViewModel.PictureUrl" class="form-label"></label>
-        <input class="form-control" asp-for="ProductViewModel.PictureUrl" placeholder="ürün resim url">
-    </div> *@
-    
     
     <div class="form-check">
         <input class="form-check-input"  asp-for="ProductViewModel.IsPublish">
@@ -69,12 +69,21 @@
             </div>
         }
         
-
+        <span class="text-danger" asp-validation-for="ProductViewModel.IsPublisherDurationId"></span>
     </div>
     
     
     
-    
+    <div class="mb-3">
+        
+        <label class="form-label" asp-for="ProductViewModel.PublishExpire">
+
+        </label>
+        <input class="form-control" asp-for="ProductViewModel.PublishExpire">
+
+
+        <span class="text-danger" asp-validation-for="ProductViewModel.PublishExpire"></span>
+    </div>
     
     
     

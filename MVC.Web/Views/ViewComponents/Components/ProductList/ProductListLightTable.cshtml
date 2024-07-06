@@ -1,15 +1,11 @@
-﻿
-@{
-    ViewData["Title"] = "ProductList";
-}
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model List<MVC.Web.Models.Products.ViewModels.ProductViewModel>
+﻿@model List<ProductViewModel>
 <h1>ProductList</h1>
-<a class="btn btn-primary" asp-controller="Forms" asp-action="CreateProduct">Create Product</a>
+<a class="btn btn-primary" asp-controller="Products" asp-action="Create">Create Product</a>
 
-<table class="table">
+<table class="table table-light table-striped">
     <thead>
         <tr>
+            <th>Image</th>
             <th>
                 Name
             </th>
@@ -22,15 +18,13 @@
             <th>
                 StockCount
             </th>
-            <th>
-                PictureUrl
-            </th>
-            
+
             <th>
                 IsPublisher
             </th>
             <th>Publish Duration</th>
             <th>Category Name</th>
+            <th>Publish Expire</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -39,10 +33,10 @@
         {
             <tr>
                 <td>
-                    <img style="width: 100px; height: 100px;"  src="/pictures/@item.PictureUrl"/>
-                 
+                    <img style="width: 100px; height: 100px;" src="/pictures/@item.PictureUrl" />
+
                 </td>
-                
+
 
                 <td>
                     @item.Name
@@ -67,11 +61,14 @@
                     @item.CategoryName
                 </td>
                 <td>
-                    
-                    <a asp-controller="Forms" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    
-                    
-                    <a asp-controller="Forms" asp-action="UpdateProduct" asp-route-id="@item.Id">Update</a>
+                    @item.PublishExpire
+                </td>
+                <td>
+
+                    <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+
+                    <a asp-controller="Products" asp-action="Update" asp-route-id="@item.Id">Update</a>
                 </td>
             </tr>
         }

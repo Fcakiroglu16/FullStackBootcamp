@@ -5,54 +5,63 @@ using MVC.Web.Models.ViewModels;
 
 namespace MVC.Web.Models.Products
 {
-    public class ProductService
+    public class ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        : IProductService
     {
-        private ProductRepository productRepository;
-        private CategoryRepository categoryRepository;
-
-        public ProductService()
-        {
-            productRepository = new ProductRepository();
-            categoryRepository = new CategoryRepository();
-        }
-
-
         public async Task Create(ProductCreateWrapperModel model)
         {
             var imageFile = model.ProductViewModel.ImageFile;
 
-            var randomFileName = string.Empty;
+            var imageFileUrl = string.Empty;
 
-            if (imageFile is not null && imageFile.Length > 0)
+            if (imageFile?.Length > 0)
             {
                 var fileExtension = Path.GetExtension(imageFile.FileName); //.jpg .png
 
-                randomFileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pictures", randomFileName);
+                imageFileUrl = $"{Guid.NewGuid().ToString()}{fileExtension}";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pictures", imageFileUrl);
 
 
                 await using var stream = new FileStream(path, FileMode.Create);
                 await imageFile.CopyToAsync(stream);
             }
 
+            #region legacy code
 
-            var product = new Product
-            {
-                Id = new Random().Next(1, 10000),
-                Name = model.ProductViewModel.Name,
-                Price = model.ProductViewModel.Price,
-                StockCount = model.ProductViewModel.StockCount,
-                Description = model.ProductViewModel.Description,
-                CategoryId = model.CategoryViewModel.CategoryId,
-                PictureUrl = randomFileName,
-                IsPublisher = model.ProductViewModel.IsPublish,
-                PublisherDurationId = model.ProductViewModel.IsPublisherDurationId
-            };
+            // MapHelper.MapToProduct(ProductCreateWrapperModel model)
+            //model.MapToProduct
+            //var product = new Product
+            //{
+            //    Id = new Random().Next(1, 10000),
+            //    Name = model.ProductViewModel.Name,
+            //    Price = model.ProductViewModel.Price,
+            //    StockCount = model.ProductViewModel.StockCount,
+            //    Description = model.ProductViewModel.Description,
+            //    CategoryId = model.CategoryViewModel.CategoryId,
+            //    PictureUrl = randomFileName,
+            //    IsPublisher = model.ProductViewModel.IsPublish,
+            //    PublisherDurationId = model.ProductViewModel.IsPublisherDurationId
+            //}; 
+
+            #endregion
 
 
-            productRepository.Add(product);
+            productRepository.Add(model.MapToProduct(imageFileUrl, new Random().Next(1, 10000)));
         }
 
+
+        public async Task<ProductCreateWrapperModel> LoadCreateWrapperModel()
+        {
+            var productCreateWrapperModel = new ProductCreateWrapperModel();
+            var categoryViewModelList = categoryRepository.GetAll();
+            productCreateWrapperModel.CategoryViewModel.CategorySelectList =
+                new SelectList(categoryViewModelList, "Id", "Name");
+
+            productCreateWrapperModel.ProductViewModel =
+                new ProductCreateViewModel(productRepository.GetPublishDuration());
+
+            return productCreateWrapperModel;
+        }
 
         public ProductUpdateWrapperModel GetUpdateModel(int id)
         {
@@ -69,12 +78,14 @@ namespace MVC.Web.Models.Products
 
             wrapper.ProductViewModel = new ProductUpdateViewModel(productRepository.GetPublishDuration())
             {
+                Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
                 StockCount = product.StockCount,
                 Description = product.Description,
                 IsPublish = product.IsPublisher,
-                IsPublisherDurationId = product.PublisherDurationId
+                IsPublisherDurationId = product.PublisherDurationId,
+                PictureUrl = product.PictureUrl
             };
 
 
@@ -87,13 +98,47 @@ namespace MVC.Web.Models.Products
 
         public async Task Update(ProductUpdateWrapperModel model)
         {
+            var imageFile = model.ProductViewModel.ImageFile;
+
+            var imageFileUrl = model.ProductViewModel.PictureUrl;
+
+            if (imageFile?.Length > 0)
+            {
+                var fileExtension = Path.GetExtension(imageFile.FileName); //.jpg .png
+
+                imageFileUrl = $"{Guid.NewGuid().ToString()}{fileExtension}";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pictures", imageFileUrl);
+
+                await using var stream = new FileStream(path, FileMode.Create);
+                await imageFile.CopyToAsync(stream);
+            }
+
+
+            #region legacy code
+
+            //var product = new Product
+            //{
+            //    Id = model.ProductViewModel.Id,
+            //    Name = model.ProductViewModel.Name,
+            //    Price = model.ProductViewModel.Price,
+            //    StockCount = model.ProductViewModel.StockCount,
+            //    Description = model.ProductViewModel.Description,
+            //    CategoryId = model.CategoryViewModel.CategoryId,
+            //    PictureUrl = randomFileName,
+            //    IsPublisher = model.ProductViewModel.IsPublish,
+            //    PublisherDurationId = model.ProductViewModel.IsPublisherDurationId
+            //}; 
+
+            #endregion
+
+
+            productRepository.Update(model.MapToProduct(imageFileUrl));
         }
 
 
         public List<ProductViewModel> GetProducts()
         {
-            var productList = productRepository.GetAll();
-            return productList.Select(x => new ProductViewModel()
+            return productRepository.GetAll().Select(x => new ProductViewModel()
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -104,34 +149,19 @@ namespace MVC.Web.Models.Products
                 PictureUrl = x.PictureUrl,
                 IsPublisher = x.IsPublisher,
                 PublishDuration = productRepository.GetPublishDuration()
-                    .First(y => y.Value == x.PublisherDurationId.ToString()).Text
+                    .First(y => y.Value == x.PublisherDurationId.ToString()).Text,
+                PublishExpire = x.PublishExpire.ToLongDateString()
             }).ToList();
-            //List<ProductViewModel> productListViewModel = new List<ProductViewModel>();
-
-            //foreach (var product in productList)
-            //{
-            //    productListViewModel.Add(new ProductViewModel()
-            //    {
-            //        Name = product.Name,
-            //        Price = product.Price,
-            //        StockCount = product.StockCount,
-            //        Description = product.Description,
-            //        CategoryName = product.CategoryName,
-            //        PictureUrl = product.PictureUrl
-            //    });
-            //}
-
-            //return productListViewModel;
         }
 
-        public List<SelectModel> GetPublishDuration()
-        {
-            return productRepository.GetPublishDuration();
-        }
+        public List<SelectModel> GetPublishDuration() => productRepository.GetPublishDuration();
 
-        public void Delete(int id)
+        public void Delete(int id) => productRepository.Delete(id);
+
+
+        public bool HasProduct(string name)
         {
-            productRepository.Delete(id);
+            return productRepository.HasProduct(name);
         }
     }
 }

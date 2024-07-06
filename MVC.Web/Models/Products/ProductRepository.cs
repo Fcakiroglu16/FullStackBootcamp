@@ -3,22 +3,15 @@ using MVC.Web.Models.ViewModels;
 
 namespace MVC.Web.Models.Products
 {
-    public interface IProductRepository
-    {
-        void Add(Product product);
-        void Update(Product product);
-        void Delete(int id);
-        List<Product> GetAll();
-    }
-
     public class ProductRepository : IProductRepository
     {
         private static List<Product> ProductList { get; set; } =
         [
             new()
             {
-                CategoryId = 1, Description = "abc", IsPublisher = true, Name = "a", PublisherDurationId = 1, Id = 100,
-                Price = 200, StockCount = 20, PictureUrl = ""
+                CategoryId = 1, Description = "abc", IsPublisher = true, Name = "kalem", PublisherDurationId = 1,
+                Id = 100,
+                Price = 200, StockCount = 20, PictureUrl = "", PublishExpire = DateTime.Now.AddDays(20)
             }
         ];
 
@@ -45,6 +38,10 @@ namespace MVC.Web.Models.Products
                 productToUpdate.Description = product.Description;
                 productToUpdate.StockCount = product.StockCount;
                 productToUpdate.CategoryId = product.CategoryId;
+                productToUpdate.PictureUrl = product.PictureUrl;
+                productToUpdate.IsPublisher = product.IsPublisher;
+                productToUpdate.PublisherDurationId = product.PublisherDurationId;
+                productToUpdate.PublishExpire = product.PublishExpire;
             }
         }
 
@@ -75,6 +72,11 @@ namespace MVC.Web.Models.Products
         public string GetPublishDurationKey(string value)
         {
             return PublishDurationList.FirstOrDefault(x => x.Value == value)!.Text;
+        }
+
+        public bool HasProduct(string name)
+        {
+            return ProductList.Any(x => x.Name == name);
         }
     }
 }

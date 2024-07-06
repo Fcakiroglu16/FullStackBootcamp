@@ -3,22 +3,16 @@ using MVC.Web.Models;
 using System.Diagnostics;
 using System.Reflection;
 using MVC.Web.Helpers;
+using MVC.Web.Models.Products;
 using MVC.Web.Models.ViewModels;
 
 namespace MVC.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IProductService productService, ILogger<HomeController> logger) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
-            return View();
+            return View(productService.GetProducts());
         }
 
         public IActionResult Privacy()

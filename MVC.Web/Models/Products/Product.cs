@@ -16,5 +16,7 @@ namespace MVC.Web.Models.Products
 
         public int PublisherDurationId { get; set; }
         public int CategoryId { get; set; }
+
+        public DateTime PublishExpire { get; set; }
     }
 }
