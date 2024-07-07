@@ -11,9 +11,9 @@ namespace MVC.Web.Controllers
     public class ProductsController(IProductService productService, ICategoryService categoryService) : Controller
     {
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromServices] IProductService productServiceAsParameter)
         {
-            return View(await productService.LoadCreateWrapperModel());
+            return View(await productServiceAsParameter.LoadCreateWrapperModel());
         }
 
 

@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Editor\Data\" />
+    <Folder Include="Areas\Editor\Models\" />
     <Folder Include="wwwroot\pictures\" />
   </ItemGroup>
 

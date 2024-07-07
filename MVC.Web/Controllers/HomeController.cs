@@ -21,6 +21,12 @@ namespace MVC.Web.Controllers
             return View();
         }
 
+
+        public IActionResult NotFoundPage()
+        {
+            return View();
+        }
+
         public IActionResult RedirectToArticle()
         {
             var Title = "Asp.Net Core ile Gelen Yenilikler.C#_ö";

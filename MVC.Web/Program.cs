@@ -1,13 +1,15 @@
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.FileProviders;
 using MVC.Web.Filters;
+using MVC.Web.Middlewares;
 using MVC.Web.Models.Categories;
 using MVC.Web.Models.Products;
 using MVC.Web.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.Configure<IpOptions>(builder.Configuration.GetSection("IpOptions"));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -37,6 +39,8 @@ builder.Services.Configure<RazorViewEngineOptions>(options =>
 var app = builder.Build();
 
 
+app.AddNotFoundMiddleware();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -45,12 +49,65 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+//app.UseMiddleware<WhiteIpAddressMiddleware>();
+
 app.UseHttpsRedirection();
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
 
+
+app.UseAuthorization();
+
+
+#region Middleware Examples
+
+//app.MapWhen(context => !context.Request.Path.Value.Contains("Home/Error"),
+//    mapWhenApp => { mapWhenApp.Run(context => context.Response.WriteAsync("MapWhen Example Middleware\n")); });
+
+
+//app.Use(async (context, next) =>
+//{
+//    await context.Response.WriteAsync("1. middleware request\n");
+
+//    await next();
+
+//    await context.Response.WriteAsync("1. middleware response\n");
+//});
+//app.Use(async (context, next) =>
+//{
+//    await context.Response.WriteAsync("2. middleware request\n");
+
+//    await next();
+
+//    await context.Response.WriteAsync("2. middleware response\n");
+//});
+
+//app.Run(async (context) => { await context.Response.WriteAsync("Terminal middleware response\n"); });
+
+
+//app.MapWhen(context => context.Request.Query.ContainsKey("Name"),
+//    mapWhenApp => { mapWhenApp.Run(context => context.Response.WriteAsync("MapWhen Example Middleware\n")); });
+
+
+//app.Map("/example-middleware",
+//    appMiddleware =>
+//    {
+//        appMiddleware.Run(context => { return context.Response.WriteAsync("Example Middleware\n"); });
+//    }); 
+
+#endregion
+
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}"
+);
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id:int}"
+);
 
 app.MapControllerRoute(
     name: "default2",
