@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC.Web.Filters;
+using MVC.Web.Models.Categories;
 using MVC.Web.Models.Products;
 using MVC.Web.Models.Products.ViewModels;
 using MVC.Web.Models.Services;
@@ -14,6 +16,8 @@ namespace MVC.Web.Controllers
             return View(await productService.LoadCreateWrapperModel());
         }
 
+
+        [CustomResourceFilter]
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateWrapperModel form)
         {
@@ -26,6 +30,8 @@ namespace MVC.Web.Controllers
             return RedirectToAction(nameof(AllList));
         }
 
+        //[CustomResultFilter]
+        [ServiceFilter(typeof(HasProductFilter))]
         public IActionResult Update(int id)
         {
             return View(productService.GetUpdateModel(id));
@@ -50,7 +56,8 @@ namespace MVC.Web.Controllers
             return View(productService.GetProducts());
         }
 
-
+        [LoggingFilter]
+        [ServiceFilter(typeof(HasProductFilter))]
         public IActionResult Delete(int id)
         {
             productService.Delete(id);

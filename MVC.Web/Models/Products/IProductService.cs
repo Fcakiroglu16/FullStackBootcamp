@@ -16,4 +16,5 @@ public interface IProductService
 
 
     bool HasProduct(string name);
+    bool HasProduct(int id);
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.FileProviders;
+using MVC.Web.Filters;
 using MVC.Web.Models.Categories;
 using MVC.Web.Models.Products;
 using MVC.Web.Models.Services;
@@ -13,12 +14,13 @@ builder.Services.AddControllersWithViews();
 // virtual path/ reference path
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
-
+builder.Services.AddScoped<HasProductFilter>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddSingleton<ProductHelper>();
+
 // DI Container Framework ICategoryRepository > CategoryRepository instance =>
 // singleton
 // scoped
@@ -28,6 +30,10 @@ builder.Services.Configure<RazorViewEngineOptions>(options =>
     options.ViewLocationFormats.Add("/Views/PartialViews/{0}" + RazorViewEngine.ViewExtension);
     options.ViewLocationFormats.Add("/Views/ViewComponents/{0}" + RazorViewEngine.ViewExtension);
 });
+//builder.Services.AddAuthorization(configure =>
+//{
+//    configure.AddPolicy("defaultPolicy", x => { x.RequireClaim("x-device", "web"); });
+//});
 var app = builder.Build();
 
 
@@ -40,15 +46,19 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+//app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
-app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default2",
+    pattern: "{controller=Home}/{action=Index}/{id:int}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 
 app.Run();

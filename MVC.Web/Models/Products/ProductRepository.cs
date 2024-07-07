@@ -78,5 +78,10 @@ namespace MVC.Web.Models.Products
         {
             return ProductList.Any(x => x.Name == name);
         }
+
+        public bool HasProduct(Func<Product, bool> func)
+        {
+            return ProductList.Any(func);
+        }
     }
 }

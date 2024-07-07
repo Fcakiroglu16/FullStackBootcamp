@@ -15,6 +15,7 @@ namespace MVC.Web.Controllers
             return View(productService.GetProducts());
         }
 
+
         public IActionResult Privacy()
         {
             return View();
@@ -34,6 +35,13 @@ namespace MVC.Web.Controllers
         //{
         //    return View();
         //}
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult CustomError(CustomErrorViewModel customErrorViewModel)
+        {
+            return View(customErrorViewModel);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

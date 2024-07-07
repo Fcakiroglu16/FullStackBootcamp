@@ -13,4 +13,6 @@ public interface IProductRepository
     List<SelectModel> GetPublishDuration();
 
     bool HasProduct(string name);
+
+    bool HasProduct(Func<Product, bool> func);
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Web.Models.Categories;
 using MVC.Web.Models.Products.ViewModels;
 using MVC.Web.Models.ViewModels;
@@ -70,11 +71,6 @@ namespace MVC.Web.Models.Products
 
             var product = productRepository.GetById(id);
 
-
-            if (product is null)
-            {
-                throw new Exception("Product not found");
-            }
 
             wrapper.ProductViewModel = new ProductUpdateViewModel(productRepository.GetPublishDuration())
             {
@@ -161,7 +157,12 @@ namespace MVC.Web.Models.Products
 
         public bool HasProduct(string name)
         {
-            return productRepository.HasProduct(name);
+            return productRepository.HasProduct(x => x.Name == name);
+        }
+
+        public bool HasProduct(int id)
+        {
+            return productRepository.HasProduct(x => x.Id == id);
         }
     }
 }
