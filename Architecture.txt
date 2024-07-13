@@ -1,0 +1,25 @@
+﻿N Layer
+
+
+Endpoint=> API
+Service (BL) Class Library
+ Services (Interface/Class)
+ Validations
+ Dtos
+ Mapper ( Dto > Entity )
+ Middleware
+ Fİlter
+ Helper
+
+Repository(DAL) Class Library
+ Repositories (Interface/Class)
+ Migrations
+ Entities
+
+
+Core (Class Library)
+ Interface
+ Dto
+ Entity
+ Exceptions
+ 
