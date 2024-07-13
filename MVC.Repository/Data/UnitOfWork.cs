@@ -1,4 +1,4 @@
-﻿namespace MVC.Repository
+﻿namespace MVC.Repository.Data
 {
     public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {

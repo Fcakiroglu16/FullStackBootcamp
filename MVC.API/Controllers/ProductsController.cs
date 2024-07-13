@@ -41,10 +41,7 @@ namespace MVC.API.Controllers
         //http://localhost/api/products/10
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> GetById(int id) => CreateResult(await productService.GetById(id));
 
 
         [HttpPost("ByCategory")]
@@ -55,21 +52,15 @@ namespace MVC.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductCreateDto request)
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> Create(ProductCreateDto request) =>
+            CreateResult(await productService.Create(request));
 
         [HttpPut]
-        public async Task<IActionResult> Update()
-        {
-            return NoContent();
-        }
+        public async Task<IActionResult> Update(ProductUpdateDto request) =>
+            CreateResult(await productService.Update(request));
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete()
-        {
-            return NoContent();
-        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) => CreateResult(await productService.Delete(id));
     }
 }

@@ -15,5 +15,9 @@ namespace MVC.Repository
         void Update(T entity);
 
         void Delete(T entity);
+
+        Task Create(T entity);
+
+        bool Any(Func<T, bool> func);
     }
 }

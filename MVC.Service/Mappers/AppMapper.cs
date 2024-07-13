@@ -9,6 +9,8 @@ namespace MVC.Service.Mappers
         public AppMapper()
         {
             CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, ProductCreateDto>().ReverseMap();
+            CreateMap<Product, ProductUpdateDto>().ReverseMap();
         }
     }
 }

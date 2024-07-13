@@ -8,7 +8,14 @@ namespace MVC.API.Controllers
     [ApiController]
     public class CustomControllerBase : ControllerBase
     {
+        [NonAction]
         public ObjectResult CreateResult<T>(ServiceResult<T> result)
+        {
+            return new ObjectResult(result) { StatusCode = result.Status.GetHashCode() };
+        }
+
+        [NonAction]
+        public ObjectResult CreateResult(ServiceResult result)
         {
             return new ObjectResult(result) { StatusCode = result.Status.GetHashCode() };
         }

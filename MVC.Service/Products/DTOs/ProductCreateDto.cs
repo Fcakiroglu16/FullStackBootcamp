@@ -1,4 +1,4 @@
 ﻿namespace MVC.Service.Products.DTOs
 {
-    public class ProductCreateDto;
+    public record ProductCreateDto(string Name, decimal Price, int Stock);
 }

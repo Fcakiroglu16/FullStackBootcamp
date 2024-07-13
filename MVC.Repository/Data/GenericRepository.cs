@@ -9,12 +9,14 @@ namespace MVC.Repository
         private readonly DbSet<T> _genericDbSet = context.Set<T>();
 
 
-        public IQueryable<T> GetAll() => _genericDbSet.AsQueryable();
+        public IQueryable<T> GetAll() => _genericDbSet.AsNoTracking().AsQueryable();
 
         public IQueryable<T> GetAllByPaging(int page, int pageSize) =>
-            _genericDbSet.Skip((page - 1) * pageSize).Take(pageSize).AsQueryable();
+            _genericDbSet.Skip((page - 1) * pageSize).Take(pageSize).AsNoTracking().AsQueryable();
 
-        public IQueryable<T> Where(Func<T, bool> func) => _genericDbSet.Where(func).AsQueryable();
+        public IQueryable<T> Where(Func<T, bool> func) => _genericDbSet.AsNoTracking().Where(func).AsQueryable();
+
+        public bool Any(Func<T, bool> func) => _genericDbSet.AsNoTracking().Any(func);
 
         public async Task<T?> GetById(int id) => await _genericDbSet.FindAsync(id);
 
@@ -22,5 +24,10 @@ namespace MVC.Repository
         public void Update(T entity) => _genericDbSet.Update(entity);
 
         public void Delete(T entity) => _genericDbSet.Remove(entity);
+
+        public async Task Create(T entity)
+        {
+            await _genericDbSet.AddAsync(entity);
+        }
     }
 }
