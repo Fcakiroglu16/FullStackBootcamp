@@ -1,3 +1,3 @@
 ﻿namespace MVC.Service;
 
-internal class AssemblyService;
+public class AssemblyService;

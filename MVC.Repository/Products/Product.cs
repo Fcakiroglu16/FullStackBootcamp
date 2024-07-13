@@ -1,4 +1,4 @@
-﻿namespace MVC.Repository
+﻿namespace MVC.Repository.Products
 {
     public class Product : BaseEntity<int>, IAuditByDate
     {

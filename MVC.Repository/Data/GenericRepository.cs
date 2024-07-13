@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MVC.Repository.Data;
 
 namespace MVC.Repository
 {

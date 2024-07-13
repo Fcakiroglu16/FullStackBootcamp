@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MVC.Repository.Data;
 
-namespace MVC.Repository
+namespace MVC.Repository.Products
 {
     internal class ProductRepository(AppDbContext context)
     {

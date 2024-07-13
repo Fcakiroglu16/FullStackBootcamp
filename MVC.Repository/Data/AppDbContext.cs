@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MVC.Repository.Configurations;
+using MVC.Repository.Products;
 
-namespace MVC.Repository
+namespace MVC.Repository.Data
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {

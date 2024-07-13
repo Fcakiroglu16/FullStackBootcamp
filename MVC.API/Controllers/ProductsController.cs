@@ -1,12 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Service.Products;
+using MVC.Service.Products.DTOs;
 
 namespace MVC.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController(IProductService productService) : CustomControllerBase
     {
         #region Methot Types
 
@@ -25,12 +27,7 @@ namespace MVC.API.Controllers
 
         // http://localhost/api/products
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            //return new OkResult();
-            //return new OkObjectResult();
-            return Ok();
-        }
+        public async Task<IActionResult> GetAll() => CreateResult(await productService.GetAll());
 
         // http://localhost/api/products/1/2
         [HttpGet("{page:int}/{pageIndex:int}")]
