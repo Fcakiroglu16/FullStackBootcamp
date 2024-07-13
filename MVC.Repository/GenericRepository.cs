@@ -2,7 +2,7 @@
 
 namespace MVC.Repository
 {
-    public class GenericRepository<T>(AppDbContext context):IGenericRepository<T>
+    public class GenericRepository<T>(AppDbContext context) : IGenericRepository<T>
         where T : class
     {
         private readonly DbSet<T> _genericDbSet = context.Set<T>();
