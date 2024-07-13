@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MVC.Repository;
+using Assembly = System.Reflection.Assembly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"),
+        configure => { configure.MigrationsAssembly(Assembly.GetAssembly(typeof(AssemblyRepository))!.FullName); });
 });
 
 
