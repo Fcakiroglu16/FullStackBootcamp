@@ -1,4 +1,23 @@
-﻿@page
-@model WebAndAPI.Razor.Pages.Producs.GetModel
-@{
+﻿@page "{id:int}"
+@model GetModel
+
+
+@if (Model.IsFail)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var item in Model.Errors)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+
+    return;
 }
+
+<p> ID :@Model.Product!.Id</p>
+<p> Name :@Model.Product!.Name</p>
+<p> Price :@Model.Product!.Price</p>
+<p> Stock :@Model.Product!.Stock</p>
+

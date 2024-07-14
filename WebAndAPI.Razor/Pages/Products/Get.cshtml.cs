@@ -1,12 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebAndAPI.Razor.Services.Products;
+using WebAndAPI.Razor.Services.Products.ViewModels;
 
-namespace WebAndAPI.Razor.Pages.Producs
+namespace WebAndAPI.Razor.Pages.Products
 {
-    public class GetModel : PageModel
+    public class GetModel(ProductService productService) : BasePageModel
     {
-        public void OnGet()
+        public ProductViewModel? Product { get; set; }
+
+        public async Task OnGetAsync(int id)
         {
+            var result = await productService.GetByIdAsync(id);
+
+            HasError(result);
+
+            if (result.IsSuccess)
+            {
+                Product = result.Data;
+            }
         }
     }
 }

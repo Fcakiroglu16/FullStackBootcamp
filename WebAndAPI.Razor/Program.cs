@@ -1,4 +1,6 @@
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using WebAndAPI.Razor.Services;
 using WebAndAPI.Razor.Services.Products;
@@ -10,6 +12,9 @@ builder.Services.AddRazorPages();
 builder.Services.Configure<BackendOptions>(builder.Configuration.GetSection(BackendOptions.Backend));
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
 
 builder.Services.AddHttpClient<ProductService>(options =>
 {

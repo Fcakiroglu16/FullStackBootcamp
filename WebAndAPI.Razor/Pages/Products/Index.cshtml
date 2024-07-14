@@ -1,10 +1,28 @@
 ﻿@page
-@model WebAndAPI.Razor.Pages.Producs.IndexModel
+@model IndexModel
 
 
-<div asp-validation-summary="ModelOnly"></div>
 
-@if (Model.Products?.Count == 0)
+
+@if (Model.IsFail)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var item in Model.Errors)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+   
+    <a asp-page="Index">Ürün anasayfasına geri dön</a>
+
+    return;
+}
+
+<a class="btn btn-primary" asp-page="CreateOrUpdate">Ürün oluştur</a>
+
+@if (Model.Products is null || Model.Products?.Count == 0)
 {
     <p>Ürünler bulunamadı</p>
     return;
@@ -24,6 +42,9 @@
                   Price
                 </th>
                 <th>Stock</th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -37,11 +58,18 @@
                        @item.Name
                     </td>
                     <td>
-                     @item.Price
+                        @item.Price
                     </td>
-                    <td>
-                        <a asp-page="./Get" asp-route-id="@item.Id">Details</a>
-                    </td>
+                    <th>
+                        @item.Stock
+                    </th>
+                    <th>
+                        <a asp-page="Get" asp-route-id="@item.Id">Detay</a>
+
+                        <a asp-page-handler="Delete" asp-route-id="@item.Id">Sil</a>
+
+                    <a  asp-page="CreateOrUpdate" asp-route-id="@item.Id">Güncelle</a>
+                    </th>
                 </tr>
             }
         </tbody>

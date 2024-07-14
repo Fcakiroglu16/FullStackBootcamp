@@ -1,0 +1,47 @@
+﻿@page "{id?}"
+@model CreateOrUpdateModel
+
+
+@if (Model.IsFail)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var item in Model.Errors)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+
+    return;
+}
+
+
+<form method="post">
+    
+    <input type="hidden" asp-for="PageModel.Id">
+
+    <div class="mb-3">
+        <label asp-for="PageModel.Name" class="form-label"></label>
+        <input class="form-control" asp-for="PageModel.Name" placeholder="ürün ismi">
+        <span asp-validation-for="PageModel.Name"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PageModel.Price" class="form-label"></label>
+        <input class="form-control" asp-for="PageModel.Price" placeholder="ürün fiyat">
+        <span asp-validation-for="PageModel.Price"></span>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label asp-for="PageModel.Stock" class="form-label"></label>
+        <input class="form-control" asp-for="PageModel.Stock" placeholder="ürün stok adet">
+        <span asp-validation-for="PageModel.Stock"></span>
+    </div>
+
+    <div>
+        <button class="btn btn-primary" type="submit">@Model.ButtonText</button>
+    </div>
+</form>
