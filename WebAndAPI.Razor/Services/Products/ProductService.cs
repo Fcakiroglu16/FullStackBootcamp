@@ -1,8 +1,9 @@
-﻿using WebAndAPI.Razor.Services.Products.ViewModels;
+﻿using Microsoft.AspNetCore.DataProtection;
+using WebAndAPI.Razor.Services.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Services.Products
 {
-    public class ProductService(HttpClient client)
+    public class ProductService(HttpClient client, IDataProtectionProvider dataProtectionProvider)
     {
         #region Farklı yol ile data almak
 
@@ -26,7 +27,17 @@ namespace WebAndAPI.Razor.Services.Products
             var responseMessage = await client.GetAsync($"{Path}");
 
 
-            return (await responseMessage.Content.ReadFromJsonAsync<ServiceResult<List<ProductViewModel>>>())!;
+            var productViewModelList =
+                await responseMessage.Content.ReadFromJsonAsync<ServiceResult<List<ProductViewModel>>>();
+
+
+            foreach (var productViewModel in productViewModelList!.Data!)
+            {
+                productViewModel.CreateEncryptId(dataProtectionProvider.CreateProtector("abc"));
+            }
+
+
+            return productViewModelList!;
         }
 
 

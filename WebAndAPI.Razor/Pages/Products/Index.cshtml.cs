@@ -13,6 +13,7 @@ namespace WebAndAPI.Razor.Pages.Products
         {
             var result = await productService.GetAllAsync();
 
+
             HasError(result);
 
             if (result.IsSuccess)

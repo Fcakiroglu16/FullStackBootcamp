@@ -1,23 +1,26 @@
-﻿namespace WebAndAPI.Razor.Services.Products.ViewModels
+﻿using Microsoft.AspNetCore.DataProtection;
+
+namespace WebAndAPI.Razor.Services.Products.ViewModels
 {
-    public record ProductViewModel(int Id, string Name, decimal Price, int Stock);
+    public record ProductViewModel(int Id, string Name, decimal Price, int Stock)
+    {
+        public int Id { get; set; } = Id;
+
+        public string Name { get; set; } = Name;
+        public decimal Price { get; set; } = Price;
+        public int Stock { get; set; } = Stock;
+
+        public string? EncryptId { get; set; }
 
 
-    //public record ProductViewModel2
-    //{
+        public void CreateEncryptId(IDataProtector dataProtector)
+        {
+            EncryptId = dataProtector.Protect(Id.ToString());
+        }
 
-    //    public ProductViewModel2(int id,string name)
-    //    {
-
-    //        Id = id;
-    //        Name = name;
-
-    //    }
-
-
-    //    public int Id { get; init; }
-    //    public string  Name { get; init; }
-
-
-    //}
+        public void DecryptId(IDataProtector dataProtector)
+        {
+            Id = int.Parse(dataProtector.Unprotect(EncryptId));
+        }
+    }
 }

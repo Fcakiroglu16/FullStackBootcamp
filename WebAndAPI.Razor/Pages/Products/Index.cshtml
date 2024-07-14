@@ -68,7 +68,7 @@
 
                         <a asp-page-handler="Delete" asp-route-id="@item.Id">Sil</a>
 
-                    <a  asp-page="CreateOrUpdate" asp-route-id="@item.Id">Güncelle</a>
+                    <a asp-page="CreateOrUpdate" asp-route-encryptId="@item.EncryptId">Güncelle</a>
                     </th>
                 </tr>
             }

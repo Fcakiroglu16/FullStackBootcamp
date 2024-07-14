@@ -1,4 +1,4 @@
-﻿@page "{id?}"
+﻿@page "{encryptId?}"
 @model CreateOrUpdateModel
 
 
@@ -19,7 +19,7 @@
 
 <form method="post">
     
-    <input type="hidden" asp-for="PageModel.Id">
+    <input type="hidden" asp-for="PageModel.EncryptId">
 
     <div class="mb-3">
         <label asp-for="PageModel.Name" class="form-label"></label>

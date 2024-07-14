@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAndAPI.Razor.Services.Products;
 using WebAndAPI.Razor.Services.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {
-    public class CreateOrUpdateModel(ProductService productService) : BasePageModel
+    public class CreateOrUpdateModel(ProductService productService, IDataProtectionProvider dataProtectionProvider)
+        : BasePageModel
     {
         [BindProperty] public ProductCreateOrUpdateViewModel PageModel { get; set; } = default!;
 
@@ -13,16 +16,24 @@ namespace WebAndAPI.Razor.Pages.Products
 
         public string ButtonText => IsUpdate ? "Güncelle" : "Ekle";
 
-        public async Task OnGetAsync(int? id)
+        public async Task OnGetAsync(string? encryptId)
         {
-            if (!id.HasValue)
+            //  Key+ Salting(
+
+
+            if (string.IsNullOrEmpty(encryptId))
             {
                 PageModel = new();
             }
             else
             {
+                var dataProtector = dataProtectionProvider.CreateProtector("abc");
                 IsUpdate = true;
-                var result = await productService.GetByIdAsync(id.Value);
+
+
+                int id = int.Parse(dataProtector.Unprotect(encryptId));
+                var result = await productService.GetByIdAsync(id);
+
 
                 HasError(result);
 
@@ -30,8 +41,14 @@ namespace WebAndAPI.Razor.Pages.Products
                 {
                     var product = result.Data;
 
-                    PageModel = new ProductCreateOrUpdateViewModel(id.Value, product!.Name, product.Price,
-                        product.Stock);
+                    PageModel = new ProductCreateOrUpdateViewModel(product!.Name, product.Price,
+                        product.Stock)
+                    {
+                        Id = product.Id
+                    };
+
+
+                    PageModel.CreateEncryptId(dataProtector);
                 }
             }
         }
@@ -43,6 +60,8 @@ namespace WebAndAPI.Razor.Pages.Products
                 return Page();
             }
 
+            var dataProtector = dataProtectionProvider.CreateProtector("abc");
+            PageModel.DecryptId(dataProtector);
 
             var result = await productService.CreateOrUpdateAsync(PageModel);
 
