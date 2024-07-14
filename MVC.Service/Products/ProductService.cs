@@ -43,6 +43,20 @@ namespace MVC.Service.Products
             return ServiceResult<ProductDto>.Success(mapper.Map<ProductDto>(hasProduct), HttpStatusCode.OK);
         }
 
+        public async Task<ServiceResult<List<ProductDto>>> GetAllByPaging(int page, int pageSize)
+        {
+            var productList = await productRepository.GetAllByPaging(page, pageSize).OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            //Manuel Way
+            // return productList.Select(x => new ProductDto(x.Id, x.Name, x.Price, x.Stock)).ToList();
+
+            var productListDto = mapper.Map<List<ProductDto>>(productList);
+
+            return ServiceResult<List<ProductDto>>.Success(productListDto, HttpStatusCode.OK);
+        }
+
+
         public async Task<ServiceResult<ProductDto>> Create(ProductCreateDto request)
         {
             var product = mapper.Map<Product>(request);

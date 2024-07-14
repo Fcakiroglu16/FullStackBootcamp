@@ -1,0 +1,52 @@
+﻿@page
+@model WebAndAPI.Razor.Pages.Producs.IndexModel
+
+
+<div asp-validation-summary="ModelOnly"></div>
+
+@if (Model.Products?.Count == 0)
+{
+    <p>Ürünler bulunamadı</p>
+    return;
+}
+
+
+<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                   Name
+                </th>
+                <th>
+                  Price
+                </th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                       @item.Id
+                    </td>
+                    <td>
+                       @item.Name
+                    </td>
+                    <td>
+                     @item.Price
+                    </td>
+                    <td>
+                        <a asp-page="./Get" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+

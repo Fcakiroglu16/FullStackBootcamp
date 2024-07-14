@@ -12,4 +12,6 @@ public interface IProductService
     Task<ServiceResult> Update(ProductUpdateDto request);
 
     Task<ServiceResult> Delete(int id);
+
+    Task<ServiceResult<List<ProductDto>>> GetAllByPaging(int page, int pageSize);
 }

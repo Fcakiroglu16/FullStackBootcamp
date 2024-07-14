@@ -9,7 +9,7 @@ namespace MVC.Repository
     internal interface IAuditByDate
     {
         DateTime Created { get; set; }
-        DateTime Updated { get; set; }
+        DateTime? Updated { get; set; }
     }
 
     interface IAuditByUser

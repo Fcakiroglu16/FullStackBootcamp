@@ -31,10 +31,8 @@ namespace MVC.API.Controllers
 
         // http://localhost/api/products/1/2
         [HttpGet("{page:int}/{pageIndex:int}")]
-        public async Task<IActionResult> GetAllByPage(int page, int pageIndex)
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> GetAllByPage(int page, int pageIndex) =>
+            CreateResult(await productService.GetAllByPaging(page, pageIndex));
 
 
         // http://localhost/api/products?id=10
