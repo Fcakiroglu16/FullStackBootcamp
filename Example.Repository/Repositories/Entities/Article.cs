@@ -1,4 +1,4 @@
-﻿namespace Example.App.Repositories.Entities
+﻿namespace Example.Repository.Repositories.Entities
 {
     public class Article : BaseEntity<int>, IAuditCreated, IAuditUpdated
     {
@@ -17,26 +17,32 @@
         public List<ArticleComment>? Comments { get; set; }
 
 
+        private Article()
+        {
+        }
+
         // static factory method
-        public static Article Create(string title, string content, List<ArticleTag> tags)
+        public static Article Create(string title, string content, List<ArticleTag> tags, int categoryId)
         {
             return new Article
             {
                 Title = title,
                 Content = content,
                 Created = DateTime.Now,
-                Tags = tags
+                Tags = tags,
+                CategoryId = categoryId
             };
         }
 
 
-        public static Article Create(string title, string content)
+        public static Article Create(string title, string content, int categoryId)
         {
             return new Article
             {
                 Title = title,
                 Content = content,
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                CategoryId = categoryId
             };
         }
     }

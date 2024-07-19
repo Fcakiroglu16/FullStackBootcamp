@@ -1,12 +1,11 @@
-﻿using Example.App.Services.ViewModels;
+﻿using Example.App.Services;
 using Example.Repository.Repositories;
 using Example.Repository.Repositories.Entities;
+using Example.Service.Services.ViewModels;
 
-namespace Example.App.Services
+namespace Example.Service.Services
 {
-    public class ArticleService(
-        IArticleRepository articleRepository,
-        ITagRepository tagRepository) : IArticleService
+    public class ArticleService(IArticleRepository articleRepository, ITagRepository tagRepository) : IArticleService
     {
         // created method
 
@@ -15,16 +14,14 @@ namespace Example.App.Services
             if (model.TagIds == null)
             {
                 articleRepository.Create(Article.Create(model.Title, model.Content, model.CategoryId));
+
+
                 return ServiceResult<NoContent>.Success();
             }
 
-
             var tags = tagRepository.Get().Where(tag => model.TagIds.Contains(tag.Id)).ToList();
             var articleTagList = tags.Select(x => ArticleTag.Create(x.Id)).ToList();
-            articleRepository.Create(Article.Create(title: model.Title, content: model.Content, tags: articleTagList,
-                categoryId: model.CategoryId));
-
-
+            articleRepository.Create(Article.Create(model.Title, model.Content, articleTagList, model.CategoryId));
             return ServiceResult<NoContent>.Success();
         }
 

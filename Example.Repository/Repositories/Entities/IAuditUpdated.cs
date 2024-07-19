@@ -1,4 +1,4 @@
-﻿namespace Example.App.Repositories
+﻿namespace Example.Repository.Repositories.Entities
 {
     public interface IAuditUpdated
     {

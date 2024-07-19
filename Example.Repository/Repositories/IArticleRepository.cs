@@ -1,6 +1,6 @@
-﻿using Example.App.Repositories.Entities;
+﻿using Example.Repository.Repositories.Entities;
 
-namespace Example.App.Repositories;
+namespace Example.Repository.Repositories;
 
 public interface IArticleRepository
 {

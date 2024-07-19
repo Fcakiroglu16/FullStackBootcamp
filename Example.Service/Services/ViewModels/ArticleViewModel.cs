@@ -1,4 +1,4 @@
-﻿namespace Example.App.Services.ViewModels
+﻿namespace Example.Service.Services.ViewModels
 {
     public record ArticleViewModel(
         int Id,
