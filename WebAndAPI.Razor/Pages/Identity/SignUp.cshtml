@@ -1,0 +1,52 @@
+﻿@page
+@model WebAndAPI.Razor.Pages.Identity.SignUpModel
+
+@section Css
+{
+    <link href="~/pages/identity/signup.css" rel="stylesheet" />
+
+}
+
+@section Scripts
+{
+    <script src="~/pages/identity/signup.js"></script>
+}
+<h2>Üye Oluşturma</h2>
+<form>
+    <div  id="success">
+        
+       
+
+    </div>
+    <div  id="errors">
+
+    </div>
+    
+    
+    <div class="mb-3">
+        <label asp-for="Model.UserName" class="form-label"></label>
+        <input  class="form-control" asp-for="Model.UserName" placeholder="ürün ismi">
+        <span asp-validation-for="Model.UserName"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Model.Email" class="form-label"></label>
+        <input class="form-control" asp-for="Model.Email" placeholder="ürün fiyat">
+        <span asp-validation-for="Model.Email"></span>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label asp-for="Model.Password" class=" form-label"></label>
+        <input  class="form-control" asp-for="Model.Password" placeholder="ürün stok adet">
+        <span asp-validation-for="Model.Password"></span>
+    </div>
+    
+    
+    
+
+    <div>
+        <button id="btnCreate" class="btn btn-primary" type="button">Oluştur</button>
+    </div>
+</form>

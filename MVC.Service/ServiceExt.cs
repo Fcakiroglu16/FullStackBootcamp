@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using MVC.Service.Identities;
 using MVC.Service.Products;
 
 namespace MVC.Service
@@ -25,6 +26,7 @@ namespace MVC.Service
             services.AddScoped<IProductService, ProductService>();
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(AssemblyService)));
+            services.AddScoped<IUserService, UserService>();
         }
 
 

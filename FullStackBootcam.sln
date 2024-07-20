@@ -12,9 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC.API", "MVC.API\MVC.API.csproj", "{4A0AAF0B-8B32-4872-AB02-C6BBDFEA6260}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API-MVC", "API-MVC", "{111AE19D-E945-48C6-85AD-F1CBF483BCEA}"
-	ProjectSection(SolutionItems) = preProject
-		Architecture.txt = Architecture.txt
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC.Repository", "MVC.Repository\MVC.Repository.csproj", "{F5AE3C36-626D-4CB6-801E-9F19CB5853B7}"
 EndProject

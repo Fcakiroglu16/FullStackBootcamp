@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Repository.Data;
+using MVC.Repository.Identities;
 
 namespace MVC.Repository
 {
@@ -21,6 +22,9 @@ namespace MVC.Repository
                         })
                     .AddInterceptors(new AppDbContextSaveChangesInterceptor());
             });
+
+
+            // Add Identity
         }
     }
 }
