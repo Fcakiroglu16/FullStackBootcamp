@@ -4,28 +4,37 @@
 }
 
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <h2>Üye Giriş</h2>
-        <form>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h2>Üye Giriş</h2>
+            
+            <div asp-validation-summary="ModelOnly"></div>
+
+           
+                <div class="mb-3">
+                    <label asp-for="Model.Email" class="form-label"></label>
+                    <input  class="form-control"  asp-for="Model.Email">
+                    <span class="text-danger" asp-validation-for="Model.Email"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Model.Password" class="form-label"></label>
+                    <input  class="form-control" asp-for="Model.Password" >
+                    <span class="text-danger" asp-validation-for="Model.Password"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <input class="form-check-input"  asp-for="Model.RememberMe">
+                    <label class="form-check-label" asp-for="Model.RememberMe"></label>
+                </div>
+                <button type="submit" class="btn btn-primary">Giriş</button>
+            
+
+        </div>
 
     </div>
+</form>
 
-</div>
 
 

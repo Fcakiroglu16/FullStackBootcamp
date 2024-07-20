@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using WebAndAPI.Razor.Services.Products;
-using WebAndAPI.Razor.Services.Products.ViewModels;
+using WebAndAPI.Razor.Pages.Products.Services;
+using WebAndAPI.Razor.Pages.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 
-namespace WebAndAPI.Razor.Services.Products.ViewModels
+namespace WebAndAPI.Razor.Pages.Products.ViewModels
 {
     public record ProductViewModel(int Id, string Name, decimal Price, int Stock)
     {

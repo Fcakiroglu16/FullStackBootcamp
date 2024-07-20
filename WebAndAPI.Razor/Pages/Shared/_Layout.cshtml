@@ -33,6 +33,12 @@
                         </li>
                     </ul>
                 </div>
+                <div>
+                    @if (User.Identity is not null &&   User.Identity.IsAuthenticated)
+                    {
+                        <p>@User.Identity.Name</p>
+                    }
+                </div>
             </div>
         </nav>
     </header>

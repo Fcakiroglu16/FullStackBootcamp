@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace WebAndAPI.Razor.Services.Products
+namespace WebAndAPI.Razor.Pages.Products.Services
 {
     public class ProductMapper : Profile
     {

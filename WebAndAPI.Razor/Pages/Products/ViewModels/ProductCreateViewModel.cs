@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace WebAndAPI.Razor.Services.Products.ViewModels
+namespace WebAndAPI.Razor.Pages.Products.ViewModels
 {
     public record ProductCreateOrUpdateViewModel(string? Name, decimal Price, int Stock)
     {

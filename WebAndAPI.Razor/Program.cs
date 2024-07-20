@@ -1,9 +1,12 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using WebAndAPI.Razor.Pages.Identity.Services;
 using WebAndAPI.Razor.Services;
-using WebAndAPI.Razor.Services.Products;
+using WebAndAPI.Razor.Pages.Products;
+using WebAndAPI.Razor.Pages.Products.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +22,32 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddHttpClient<ProductService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
-    options.BaseAddress = new Uri(backendOptions.BaseUrl);
+    options.BaseAddress = new Uri(backendOptions!.BaseUrl);
 });
+
+
+builder.Services.AddHttpClient<IdentityService>(options =>
+{
+    var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
+    options.BaseAddress = new Uri(backendOptions!.BaseUrl);
+});
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromDays(60);
+        options.Cookie.Name = "AppCookie";
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Identity/SignIn";
+        options.AccessDeniedPath = "/Identity/Denied";
+    });
 
 
 var app = builder.Build();
@@ -41,7 +64,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

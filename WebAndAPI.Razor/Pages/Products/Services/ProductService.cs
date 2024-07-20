@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using WebAndAPI.Razor.Pages.Products.ViewModels;
+using WebAndAPI.Razor.Services;
 using WebAndAPI.Razor.Services.Products.ViewModels;
 
-namespace WebAndAPI.Razor.Services.Products
+namespace WebAndAPI.Razor.Pages.Products.Services
 {
     public class ProductService(HttpClient client, IDataProtectionProvider dataProtectionProvider)
     {

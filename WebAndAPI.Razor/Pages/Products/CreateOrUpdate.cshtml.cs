@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebAndAPI.Razor.Services.Products;
-using WebAndAPI.Razor.Services.Products.ViewModels;
+using WebAndAPI.Razor.Pages.Products.Services;
+using WebAndAPI.Razor.Pages.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {
+    [Authorize(Roles = "editor")]
     public class CreateOrUpdateModel(ProductService productService, IDataProtectionProvider dataProtectionProvider)
         : BasePageModel
     {

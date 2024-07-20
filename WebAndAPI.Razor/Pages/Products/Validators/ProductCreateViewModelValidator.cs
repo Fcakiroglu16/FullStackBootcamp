@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using WebAndAPI.Razor.Services.Products.ViewModels;
+using WebAndAPI.Razor.Pages.Products.ViewModels;
 
-namespace WebAndAPI.Razor.Services.Products.Validators
+namespace WebAndAPI.Razor.Pages.Products.Validators
 {
     public class ProductCreateViewModelValidator : AbstractValidator<ProductCreateOrUpdateViewModel>
     {
