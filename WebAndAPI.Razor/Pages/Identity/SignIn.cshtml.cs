@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAndAPI.Razor.Pages.Identity.Services;
@@ -7,7 +8,7 @@ namespace WebAndAPI.Razor.Pages.Identity
 {
     public class SignInModel(IdentityService identityService) : PageModel
     {
-        [BindProperty] public SignInViewModel Model { get; set; } = SignInViewModel.Empty();
+        [BindProperty] public SignInViewModel Model { get; set; } = new SignInViewModel(); //SignInViewModel.Empty();
 
         public void OnGet()
         {
@@ -28,6 +29,25 @@ namespace WebAndAPI.Razor.Pages.Identity
             }
 
             return Page();
+        }
+
+
+        public async Task<IActionResult> OnGetLogOut(int id)
+        {
+            await HttpContext.SignOutAsync();
+
+
+            return RedirectToPage("/Index");
+            //log out
+        }
+
+        public async Task<IActionResult> OnPostLogOut()
+        {
+            await HttpContext.SignOutAsync();
+
+
+            return RedirectToPage("/Index");
+            //log out
         }
     }
 }

@@ -1,0 +1,92 @@
+﻿@page
+@model WebAndAPI.Razor.Pages.DropDownListExampleModel
+@{
+}
+
+@section Scripts
+{
+    <script>
+        var baseUrl = "http://localhost:5270/api";
+
+
+
+        $(document).ready(function () {
+
+            $.getJSON(`${baseUrl}/Common/GetCountry`, function (data) {
+
+                $.each(data, function (index, item) {
+
+                    $("#selectCountry").append(`<option value='${item.id}'>${item.value}</option>`);
+
+                });
+            
+            
+            });
+            $("#selectCountry").change(function () {
+
+                const selectedValue = $(this).val();
+
+                $.getJSON(`${baseUrl}/Common/GetProvince/${selectedValue}`, function (data) {
+
+
+                    $("#selectProvince").empty();
+
+                    if (selectedValue == 0) {
+                        $("#selectProvince").append(`<option>il seç</option>`);
+                        $("#selectProvince").attr("disabled", "disabled"); return;
+                    }
+
+                    if (data.length <= 0) {
+
+
+                        $("#selectProvince").attr("disabled", "disabled") ;
+                        $("#selectProvince").append(`<option>il bulunamamıştır</option>`);
+                        return;
+                    }
+
+                    $("#selectProvince").removeAttr("disabled")
+                    $.each(data, function (index, item) {
+
+                        $("#selectProvince").append(`<option value='${item.id}'>${item.value}</option>`);
+
+                    });
+
+                   
+
+                   
+
+
+                })
+
+            })
+
+
+
+
+
+        })
+    </script>
+    
+    
+
+}
+
+<form>
+    
+    <div class="mb-3">
+        <label for="selectCountry" class="form-label">Ülke :</label>
+        <select id="selectCountry" class="form-select" aria-label="Default select example">
+            <option value="0" selected >ülke seç</option>
+           
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="selectProvince" class="form-label">İl :</label>
+        <select id="selectProvince" class="form-select" aria-label="Default select example" disabled>
+            <option value="0" selected>il seç</option>
+
+        </select>
+    </div>
+
+</form>
+

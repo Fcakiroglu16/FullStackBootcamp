@@ -1,0 +1,18 @@
+﻿@page "{handler?}/{name?}"
+@model WebAndAPI.Razor.Pages.ExampleModel
+@{
+}
+
+<p>Type :@Model.Type</p>
+<a asp-page-handler="Work">Work</a>
+
+<a asp-Page="Example">Get Work</a>
+
+<a asp-page-handler="RouteData" asp-route-name="ahmet">route data</a>
+
+
+<form method="post" asp-page-handler="Work" >
+    
+    
+    <button type="submit">Submit></button>
+</form>

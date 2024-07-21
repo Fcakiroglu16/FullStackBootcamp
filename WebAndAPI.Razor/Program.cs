@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using WebAndAPI.Razor.Pages;
 using WebAndAPI.Razor.Pages.Identity.Services;
 using WebAndAPI.Razor.Services;
 using WebAndAPI.Razor.Pages.Products;
@@ -30,7 +31,11 @@ builder.Services.AddHttpClient<ProductService>(options =>
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
     options.BaseAddress = new Uri(backendOptions!.BaseUrl);
 });
-
+builder.Services.AddHttpClient<CommonService>(options =>
+{
+    var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
+    options.BaseAddress = new Uri(backendOptions!.BaseUrl);
+});
 
 builder.Services.AddHttpClient<IdentityService>(options =>
 {

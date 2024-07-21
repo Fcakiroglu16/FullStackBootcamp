@@ -36,7 +36,14 @@
                 <div>
                     @if (User.Identity is not null &&   User.Identity.IsAuthenticated)
                     {
-                        <p>@User.Identity.Name</p>
+                        <p>@User.Identity.Name (<a asp-page="/Identity/Signin" asp-page-handler="LogOut">çıkış yap</a>)</p>
+
+                      
+                        
+                    }
+                    else
+                    {
+                        <a asp-page="/Identity/SignIn">Giriş yap</a>
                     }
                 </div>
             </div>

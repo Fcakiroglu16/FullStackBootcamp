@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,9 @@ namespace WebAndAPI.Razor.Pages.Products
 
         public async Task OnGetAsync(string? encryptId)
         {
-            //  Key+ Salting(
-
+            //var claims = User.Claims;
+            //var email = User.FindFirst(x => x.Type == ClaimTypes.Email).Value;
+            //var roles = User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x=>x.Value).ToList();
 
             if (string.IsNullOrEmpty(encryptId))
             {
