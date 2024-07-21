@@ -11,10 +11,5 @@ namespace MVC.Web.Controllers
         {
             return View();
         }
-
-        public async Task<IActionResult> LogOut()
-        {
-            await HttpContext.SignOutAsync();
-        }
     }
 }

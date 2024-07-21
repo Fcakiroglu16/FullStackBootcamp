@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Service.Identities;
 using MVC.Service.Products;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
 
 namespace MVC.Service
 {

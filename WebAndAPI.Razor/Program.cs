@@ -26,6 +26,8 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<ProductService>();
+
+
 builder.Services.AddHttpClient<ProductService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
@@ -36,7 +38,6 @@ builder.Services.AddHttpClient<CommonService>(options =>
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
     options.BaseAddress = new Uri(backendOptions!.BaseUrl);
 });
-
 builder.Services.AddHttpClient<IdentityService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();

@@ -1,11 +1,15 @@
 ﻿using System.Net;
 using System.Runtime.Intrinsics.Arm;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using MVC.Repository.Identities;
 
 namespace MVC.Service.Identities
 {
-    public class UserService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : IUserService
+    public class UserService(
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager,
+        ILogger<UserService> logger) : IUserService
     {
         public async Task<ServiceResult> SignUp(SignUpDto request)
         {
@@ -13,6 +17,7 @@ namespace MVC.Service.Identities
 
             if (hasUser is not null)
             {
+                logger.LogInformation("Email adresi olmadığı için kullanıcı bulunamadı");
                 return ServiceResult.Fail("Email adresi başka bir kullanıcı tarafından kullanılıyor",
                     HttpStatusCode.BadRequest);
             }

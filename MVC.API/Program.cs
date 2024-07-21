@@ -1,8 +1,16 @@
+using Asp.Versioning;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using MVC.API;
 using MVC.API.Filters;
 using MVC.Repository;
 using MVC.Repository.Data;
 using MVC.Repository.Identities;
 using MVC.Service;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +47,55 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     //options.Password.RequiredUniqueChars=
     options.Password.RequiredLength = 4;
 }).AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+
+
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("x-version"), new HeaderApiVersionReader("x-version"),
+        new UrlSegmentApiVersionReader()
+    );
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+builder.Services.AddOpenTelemetry().WithTracing(options =>
+{
+    options.ConfigureResource(x => { x.AddService("MVC.API", serviceVersion: "1.0"); });
+
+
+    options.AddAspNetCoreInstrumentation(configure =>
+    {
+        //configure.Filter = (httpContext) => httpContext.Request.Path.Value!.Contains("api");
+    });
+    options.AddEntityFrameworkCoreInstrumentation(configure =>
+    {
+        configure.SetDbStatementForText = true;
+        configure.SetDbStatementForStoredProcedure = true;
+
+        configure.EnrichWithIDbCommand = (activity, command) =>
+        {
+            //list sql parameters
+
+            foreach (var parameter in command.Parameters)
+            {
+                var sqlParameter = parameter as SqlParameter;
+
+                if (sqlParameter is not null)
+                {
+                    activity.AddTag(sqlParameter!.ParameterName, sqlParameter!.Value);
+                }
+            }
+        };
+    });
+
+    options.AddOtlpExporter().AddConsoleExporter();
+});
 
 var app = builder.Build();
 
@@ -57,5 +114,4 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

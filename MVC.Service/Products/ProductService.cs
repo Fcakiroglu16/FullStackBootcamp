@@ -2,6 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MVC.Repository;
 using MVC.Repository.Data;
 using MVC.Repository.Products;
@@ -13,7 +14,8 @@ namespace MVC.Service.Products
         IGenericRepository<Product> productRepository,
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        AppDbContext context)
+        AppDbContext context,
+        ILogger<ProductService> logger)
         : IProductService
     {
         public async Task<ServiceResult<List<ProductDto>>> GetAll()
@@ -38,6 +40,15 @@ namespace MVC.Service.Products
                 //return
                 return ServiceResult<ProductDto>.Fail("ürün bulunamadı", HttpStatusCode.NotFound);
             }
+
+            //logger.LogInformation($"product id'si " + id + " olan data db'den çekildi");
+
+            //product id'si 6 olan data db'den çekildi
+            // productId=6
+            // userId=20
+
+            //Formatted Message
+            logger.LogInformation("product id'si {productId} olan data db'den çekildi(user Id={userId})", id, 20);
 
 
             return ServiceResult<ProductDto>.Success(mapper.Map<ProductDto>(hasProduct), HttpStatusCode.OK);

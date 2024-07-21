@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -19,6 +20,7 @@ namespace MVC.API.Controllers
                 new(1, "Türkiye"),
                 new(2, "Almanya")
             };
+
 
             return Ok(countryList);
         }
