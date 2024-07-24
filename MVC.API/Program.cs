@@ -8,6 +8,7 @@ using MVC.Repository.Data;
 using MVC.Repository.Identities;
 using MVC.Service;
 using OpenTelemetry;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -71,7 +72,7 @@ builder.Services.AddOpenTelemetry().WithTracing(options =>
 
     options.AddAspNetCoreInstrumentation(configure =>
     {
-        //configure.Filter = (httpContext) => httpContext.Request.Path.Value!.Contains("api");
+        configure.Filter = (httpContext) => httpContext.Request.Path.Value!.Contains("api");
     });
     options.AddEntityFrameworkCoreInstrumentation(configure =>
     {
@@ -93,9 +94,17 @@ builder.Services.AddOpenTelemetry().WithTracing(options =>
             }
         };
     });
-
+    options.AddHttpClientInstrumentation();
     options.AddOtlpExporter().AddConsoleExporter();
 });
+
+
+builder.Logging.AddOpenTelemetry(cfg =>
+{
+    cfg.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("MVC.API", serviceVersion: "1.0"));
+    cfg.AddOtlpExporter((x, y) => { });
+});
+
 
 var app = builder.Build();
 

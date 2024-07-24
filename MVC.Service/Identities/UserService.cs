@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Runtime.Intrinsics.Arm;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -35,6 +36,7 @@ namespace MVC.Service.Identities
             var newUser = AppUser.Create(request.Email, request.UserName, request.City);
             var result = await userManager.CreateAsync(newUser, request.Password);
 
+
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(x => x.Description).ToList();
@@ -43,6 +45,10 @@ namespace MVC.Service.Identities
             }
 
 
+            var httpClient = new HttpClient();
+            var httpResult = await httpClient.GetAsync("https://jsonplaceholder.typicode.com/todos/1");
+
+            logger.LogInformation("Kullanıcı oluştu");
             return ServiceResult.Success(HttpStatusCode.Created);
         }
 
