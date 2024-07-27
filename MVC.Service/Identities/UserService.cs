@@ -10,7 +10,8 @@ namespace MVC.Service.Identities
     public class UserService(
         UserManager<AppUser> userManager,
         RoleManager<AppRole> roleManager,
-        ILogger<UserService> logger) : IUserService
+        ILogger<UserService> logger,
+        ITokenService tokenService) : IUserService
     {
         public async Task<ServiceResult> SignUp(SignUpDto request)
         {
@@ -52,14 +53,14 @@ namespace MVC.Service.Identities
             return ServiceResult.Success(HttpStatusCode.Created);
         }
 
-        public async Task<ServiceResult<SignInResponseDto>> SignIn(SignInDto request)
+        public async Task<ServiceResult<TokenResponseDto>> SignIn(SignInDto request)
         {
             var hasUser = await userManager.FindByEmailAsync(request.Email);
 
 
             if (hasUser is null)
             {
-                return ServiceResult<SignInResponseDto>.Fail("Email veya şifre hatalı", HttpStatusCode.NotFound);
+                return ServiceResult<TokenResponseDto>.Fail("Email veya şifre hatalı", HttpStatusCode.NotFound);
             }
 
             var checkPassword = await userManager.CheckPasswordAsync(hasUser, request.Password);
@@ -67,18 +68,23 @@ namespace MVC.Service.Identities
 
             if (!checkPassword)
             {
-                return ServiceResult<SignInResponseDto>.Fail("Email veya şifre hatalı", HttpStatusCode.NotFound);
+                return ServiceResult<TokenResponseDto>.Fail("Email veya şifre hatalı", HttpStatusCode.NotFound);
             }
 
 
             var roles = await userManager.GetRolesAsync(hasUser);
 
 
-            var signInResponseDto =
-                new SignInResponseDto(hasUser.Id, hasUser.UserName!, hasUser.Email!, roles.ToList());
+            var tokenResponse = await tokenService.GetTokenWithResourceOwner(hasUser, roles.ToList());
 
 
-            return ServiceResult<SignInResponseDto>.Success(signInResponseDto, HttpStatusCode.OK);
+            if (!tokenResponse.IsSuccess)
+            {
+                return ServiceResult<TokenResponseDto>.Fail(tokenResponse.Errors!, HttpStatusCode.InternalServerError);
+            }
+
+
+            return ServiceResult<TokenResponseDto>.Success(tokenResponse.Data!, HttpStatusCode.OK);
         }
 
         public async Task<ServiceResult> AddRoleToUser(Guid userId, string roleName)

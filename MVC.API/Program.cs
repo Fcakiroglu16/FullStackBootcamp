@@ -141,7 +141,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SignatureKey)),
         ValidateIssuerSigningKey = false
     };
-}).AddJwtBearer("bayiScheme", options => { });
+});
 
 #endregion
 

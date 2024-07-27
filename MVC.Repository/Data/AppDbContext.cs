@@ -15,7 +15,7 @@ namespace MVC.Repository.Data
 
 
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,8 +24,8 @@ namespace MVC.Repository.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

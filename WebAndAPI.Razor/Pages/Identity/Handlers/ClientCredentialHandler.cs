@@ -18,12 +18,12 @@ namespace WebAndAPI.Razor.Pages.Identity.Handlers
             }
 
 
-            if (!request.Headers.Contains("Authorization"))
-            {
-                request.Headers.Add("Authorization", $"Bearer {accessTokenResult.Data}");
-            }
+            //if (!request.Headers.Contains("Authorization"))
+            //{
+            //    request.Headers.Add("Authorization", $"Bearer {accessTokenResult.Data}");
+            //}
 
-            //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessTokenResult.Data);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessTokenResult.Data);
 
 
             var response = await base.SendAsync(request, cancellationToken);

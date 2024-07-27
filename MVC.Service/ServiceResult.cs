@@ -11,7 +11,7 @@ public class ServiceResult<T>
     public List<string>? Errors { get; set; }
 
     [JsonIgnore] public HttpStatusCode Status { get; set; }
-    [JsonIgnore] public bool IsSuccess => Errors?.Count == 0;
+    [JsonIgnore] public bool IsSuccess => Errors is null || Errors?.Count == 0;
 
 
     // success method

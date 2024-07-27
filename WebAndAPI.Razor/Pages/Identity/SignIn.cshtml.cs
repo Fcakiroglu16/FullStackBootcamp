@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.JsonWebTokens;
 using WebAndAPI.Razor.Pages.Identity.Services;
 using WebAndAPI.Razor.Pages.Identity.ViewModels;
 
@@ -10,8 +11,15 @@ namespace WebAndAPI.Razor.Pages.Identity
     {
         [BindProperty] public SignInViewModel Model { get; set; } = new SignInViewModel(); //SignInViewModel.Empty();
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                var userId = User.FindFirst(x => x.Type == JwtRegisteredClaimNames.Sub)!.Value;
+                return RedirectToPage("/Index");
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
