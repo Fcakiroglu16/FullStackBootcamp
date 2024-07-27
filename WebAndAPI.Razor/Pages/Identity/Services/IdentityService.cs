@@ -47,5 +47,20 @@ namespace WebAndAPI.Razor.Pages.Identity.Services
             //contextAccessor.HttpContext.Request.Cookies.TryGetValue("userId",out string userId)
             return ServiceResult.Success();
         }
+
+
+        public async Task<ServiceResult> SignUp(SignUpViewModel request)
+        {
+            var response = await client.PostAsJsonAsync("/api/Identity/SignUp", request);
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadFromJsonAsync<ServiceResult>();
+                return ServiceResult.Failure(responseContent!.Errors!);
+            }
+
+            return ServiceResult.Success();
+        }
     }
 }

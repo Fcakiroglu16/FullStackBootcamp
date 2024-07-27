@@ -20,15 +20,18 @@ namespace WebAndAPI.Razor.Pages.Identity
 
             var result = await identityService.SignIn(Model);
 
-            if (result.IsSuccess) return RedirectToPage("/Products/Index");
-
-
-            foreach (var error in result.Errors!)
+            if (!result.IsSuccess)
             {
-                ModelState.AddModelError(string.Empty, error);
+                foreach (var error in result.Errors!)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+
+                return Page();
             }
 
-            return Page();
+
+            return RedirectToPage("/Products/Index");
         }
 
 

@@ -1,12 +1,12 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using System.Reflection;
+using WebAndAPI.Razor.Models;
 using WebAndAPI.Razor.Pages;
+using WebAndAPI.Razor.Pages.Identity.Handlers;
 using WebAndAPI.Razor.Pages.Identity.Services;
-using WebAndAPI.Razor.Services;
-using WebAndAPI.Razor.Pages.Products;
 using WebAndAPI.Razor.Pages.Products.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +27,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<ProductService>();
 
+builder.Services.AddScoped<ClientCredentialHandler>();
 
 builder.Services.AddHttpClient<ProductService>(options =>
 {
@@ -42,8 +43,12 @@ builder.Services.AddHttpClient<IdentityService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
     options.BaseAddress = new Uri(backendOptions!.BaseUrl);
+}).AddHttpMessageHandler<ClientCredentialHandler>();
+builder.Services.AddHttpClient<TokenService>(options =>
+{
+    var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
+    options.BaseAddress = new Uri(backendOptions!.BaseUrl);
 });
-
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

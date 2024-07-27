@@ -14,7 +14,7 @@ namespace WebAndAPI.Razor.Pages.Identity.ViewModels
         string Password,
         string? City)
     {
-        public SignUpViewModel() : this(default, default, default, default)
+        public SignUpViewModel() : this(default!, default!, default!, default)
         {
         }
 

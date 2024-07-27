@@ -1,17 +1,23 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MVC.API;
 using MVC.API.Filters;
 using MVC.Repository;
 using MVC.Repository.Data;
 using MVC.Repository.Identities;
 using MVC.Service;
+using MVC.Service.Identities;
+using MVC.Service.Identities.Options;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +55,11 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     options.Password.RequiredLength = 4;
 }).AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.Configure<TokenOption>(builder.Configuration.GetSection("TokenOption"));
+builder.Services.Configure<ClientCredentialsOption>(builder.Configuration.GetSection("ClientCredentialsOption"));
+
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1);
@@ -65,6 +76,10 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+
+
+#region OPenTelemetry
+
 builder.Services.AddOpenTelemetry().WithTracing(options =>
 {
     options.ConfigureResource(x => { x.AddService("MVC.API", serviceVersion: "1.0"); });
@@ -96,14 +111,39 @@ builder.Services.AddOpenTelemetry().WithTracing(options =>
     });
     options.AddHttpClientInstrumentation();
     options.AddOtlpExporter().AddConsoleExporter();
-});
-
-
-builder.Logging.AddOpenTelemetry(cfg =>
+}).WithLogging(cfg =>
 {
     cfg.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("MVC.API", serviceVersion: "1.0"));
-    cfg.AddOtlpExporter((x, y) => { });
+    cfg.AddOtlpExporter();
 });
+
+#endregion
+
+
+#region Token Validation
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    var tokenOption = (builder.Configuration.GetSection("TokenOption").Get<TokenOption>())!;
+
+
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidIssuer = tokenOption.Issuer,
+        ValidateIssuer = false,
+        ValidAudience = tokenOption.Audience,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SignatureKey)),
+        ValidateIssuerSigningKey = false
+    };
+}).AddJwtBearer("bayiScheme", options => { });
+
+#endregion
 
 
 var app = builder.Build();
@@ -119,7 +159,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
