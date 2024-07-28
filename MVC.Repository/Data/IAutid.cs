@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MVC.Repository
+﻿namespace MVC.Repository.Data
 {
-    internal interface IAuditByDate
+    public interface IAuditByDate
     {
         DateTime Created { get; set; }
         DateTime? Updated { get; set; }
     }
 
-    interface IAuditByUser
+    public interface IAuditByUser
     {
-        string CreatedByUser { get; set; }
+        Guid? CreatedByUser { get; set; }
 
-        string UpdatedByUser { get; set; }
+        Guid? UpdatedByUser { get; set; }
     }
 }

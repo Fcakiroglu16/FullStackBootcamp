@@ -1,48 +1,124 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.IdentityModel.JsonWebTokens;
+using MVC.Repository.Products;
 
 namespace MVC.Repository.Data
 {
-    public class AppDbContextSaveChangesInterceptor : SaveChangesInterceptor
+    public class AppDbContextSaveChangesInterceptor(IHttpContextAccessor? contextAccessor) : SaveChangesInterceptor
     {
+        private static readonly Dictionary<EntityState, Action<DbContextEventData, object, Guid?>>
+            SaveChangeMethods = new();
+
+        static AppDbContextSaveChangesInterceptor()
+        {
+            SaveChangeMethods.Add(EntityState.Added, AddBehavior);
+            SaveChangeMethods.Add(EntityState.Modified, UpdateBehavior);
+        }
+
+
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
             InterceptionResult<int> result,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            var entityEntries = eventData.Context!.ChangeTracker.Entries().ToList();
+            var userId = GetUserIdOrDefault();
 
-            foreach (var entityEntry in entityEntries)
+            foreach (var entityEntry in eventData.Context!.ChangeTracker.Entries().ToList())
             {
-                if (entityEntry.Entity is not IAuditByDate entity)
+                //var idProperty = entityEntry.Entity.GetType().GetProperty("Id");
+
+                //var idPropertyPropertyType = idProperty!.PropertyType!;
+
+                //TODO : refactoring
+                if (entityEntry.Entity is BaseUserEntity<Guid> baseUserEntity && userId.HasValue)
                 {
-                    continue;
+                    baseUserEntity.UserId = userId.Value;
                 }
 
-                switch (entityEntry.State)
+                if (entityEntry.Entity is BaseUserEntity<int> baseUserEntity2 && userId.HasValue)
                 {
-                    case EntityState.Added:
-
-                        entity.Created = DateTime.Now;
-                        eventData.Context.Entry(entity).Property(x => x.Updated).IsModified = false;
-                        break;
-
-                    case EntityState.Modified:
-
-
-                        entity.Updated = DateTime.Now;
-                        eventData.Context.Entry(entity).Property(x => x.Created).IsModified = false;
-                        break;
+                    baseUserEntity2.UserId = userId.Value;
                 }
+
+
+                if (entityEntry.State is not (EntityState.Added or EntityState.Modified)) continue;
+
+                SaveChangeMethods[entityEntry.State](eventData, entityEntry.Entity, userId);
+
+                #region Bad
+
+                //switch (entityEntry.State)
+                //{
+                //    case EntityState.Added:
+
+                //        AddBehavior(eventData, entity, userId);
+
+
+                //        break;
+
+                //    case EntityState.Modified:
+
+
+                //        UpdateBehavior(eventData, entity, userId);
+
+
+                //        break;
+                //}
+
+                #endregion
             }
 
 
             return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+
+        private Guid? GetUserIdOrDefault()
+        {
+            var hasUser =
+                contextAccessor!.HttpContext!.User.FindFirst(x => x.Type == JwtRegisteredClaimNames.Name) is not null;
+            if (contextAccessor is null || !hasUser)
+            {
+                return Guid.Empty;
+            }
+
+
+            return Guid.Parse(contextAccessor!.HttpContext.User
+                .FindFirst(x => x.Type == ClaimTypes.NameIdentifier)!.Value);
+        }
+
+        private static void UpdateBehavior(DbContextEventData eventData, object entity, Guid? userId)
+        {
+            if (entity is IAuditByDate entityAsDate)
+            {
+                entityAsDate.Updated = DateTime.Now;
+                eventData.Context!.Entry(entityAsDate).Property(x => x.Created).IsModified = false;
+            }
+
+            if (userId.HasValue && entity is IAuditByUser entityAsUser)
+            {
+                entityAsUser.UpdatedByUser = userId;
+                eventData.Context!.Entry(entityAsUser).Property(x => x.CreatedByUser).IsModified =
+                    false;
+            }
+        }
+
+        private static void AddBehavior(DbContextEventData eventData, object entity, Guid? userId)
+        {
+            if (entity is IAuditByDate entityAsDate)
+            {
+                entityAsDate.Created = DateTime.Now;
+                eventData.Context!.Entry(entityAsDate).Property(x => x.Updated).IsModified = false;
+            }
+
+
+            if (userId.HasValue && entity is IAuditByUser entityAsUser)
+            {
+                entityAsUser.CreatedByUser = userId;
+                eventData.Context!.Entry(entityAsUser).Property(x => x.UpdatedByUser).IsModified =
+                    false;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,14 +14,18 @@ namespace MVC.Repository
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddDbContext<AppDbContext>(options =>
+
+
+            services.AddDbContext<AppDbContext>((sp, options) =>
             {
+                var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+
                 options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
                         configure =>
                         {
                             configure.MigrationsAssembly(Assembly.GetAssembly(typeof(AssemblyRepository))!.FullName);
                         })
-                    .AddInterceptors(new AppDbContextSaveChangesInterceptor());
+                    .AddInterceptors(new AppDbContextSaveChangesInterceptor(httpContextAccessor));
             });
 
 

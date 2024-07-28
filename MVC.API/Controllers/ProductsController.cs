@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Service.Products;
@@ -6,6 +7,7 @@ using MVC.Service.Products.DTOs;
 
 namespace MVC.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController(IProductService productService) : CustomControllerBase
@@ -52,6 +54,7 @@ namespace MVC.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateDto request) =>
             CreateResult(await productService.Create(request));
+
 
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateDto request) =>

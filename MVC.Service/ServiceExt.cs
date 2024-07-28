@@ -23,6 +23,7 @@ namespace MVC.Service
     {
         public static void AddServiceExt(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AssemblyService)));
             services.AddScoped<IProductService, ProductService>();

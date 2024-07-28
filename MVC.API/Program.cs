@@ -141,6 +141,21 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SignatureKey)),
         ValidateIssuerSigningKey = false
     };
+}).AddJwtBearer("clientCredentialSchema", options =>
+{
+    var tokenOption = (builder.Configuration.GetSection("TokenOption").Get<TokenOption>())!;
+
+
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidIssuer = tokenOption.Issuer,
+        ValidateIssuer = false,
+        ValidAudience = tokenOption.Audience,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOption.SignatureKey)),
+        ValidateIssuerSigningKey = false
+    };
 });
 
 #endregion

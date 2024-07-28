@@ -15,6 +15,9 @@ namespace MVC.Repository.Products
         {
             builder.Property(x => x.Name).HasMaxLength(250);
             builder.Property(x => x.Price).HasColumnType("decimal(18,2)");
+
+            builder.Property(x => x.CreatedByUser).HasMaxLength(256);
+            builder.Property(x => x.UpdatedByUser).HasMaxLength(256);
         }
     }
 }

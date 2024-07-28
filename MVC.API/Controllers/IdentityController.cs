@@ -5,7 +5,6 @@ using MVC.Service.OpenTelemetry;
 
 namespace MVC.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class IdentityController(
@@ -13,6 +12,7 @@ namespace MVC.API.Controllers
         ITokenService tokenService,
         ILogger<IdentityController> logger) : CustomControllerBase
     {
+        [Authorize(AuthenticationSchemes = "clientCredentialSchema")]
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(SignUpDto request)
         {
@@ -20,7 +20,7 @@ namespace MVC.API.Controllers
             return CreateResult(await userService.SignUp(request));
         }
 
-
+        [Authorize(AuthenticationSchemes = "clientCredentialSchema")]
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(SignInDto request) => CreateResult(await userService.SignIn(request));
 
