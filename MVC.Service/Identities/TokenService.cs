@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using MVC.Repository;
 using MVC.Repository.Identities;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -15,9 +16,10 @@ namespace MVC.Service.Identities
         IOptions<ClientCredentialsOption> clientCredentialOptions,
         IOptions<TokenOption> tokenOptions,
         IGenericRepository<RefreshToken> refreshTokenRepository,
-        IUnitOfWork unitOfWork) : ITokenService
+        IUnitOfWork unitOfWork,
+        IHttpContextAccessor contextAccessor) : ITokenService
     {
-        public ServiceResult<TokenResponseDto> GetTokenWithClientCredential(ClientCredentialRequestDto request)
+        public ServiceResult<TokenResponseDto> GetTokenWithClientCredentialAsync(ClientCredentialRequestDto request)
         {
             if (!clientCredentialOptions.Value.Clients.Any(x =>
                     x.Id == request.ClientId && x.Secret == request.ClientSecret))
@@ -53,7 +55,8 @@ namespace MVC.Service.Identities
         }
 
 
-        public async Task<ServiceResult<TokenResponseDto>> GetTokenWithResourceOwner(AppUser user, List<string> roles)
+        public async Task<ServiceResult<TokenResponseDto>> GetTokenWithResourceOwnerAsync(AppUser user,
+            List<string> roles)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.SignatureKey));
             var credentials =
@@ -113,6 +116,29 @@ namespace MVC.Service.Identities
                 ((DateTimeOffset)newRefreshToken.Expire).ToUnixTimeSeconds());
 
             return ServiceResult<TokenResponseDto>.Success(response, HttpStatusCode.OK);
+        }
+
+
+        public async Task<ServiceResult> SignOutAsync()
+        {
+            var userId = contextAccessor.GetUserId();
+
+            if (userId is null) return ServiceResult.Fail("userId bulunamadı", HttpStatusCode.BadRequest);
+
+
+            var refreshToken = refreshTokenRepository.Where(x => x.UserId == userId).FirstOrDefault();
+
+
+            if (refreshToken is null)
+            {
+                return ServiceResult.Fail("RefreshToken bulunamadı", HttpStatusCode.BadRequest);
+            }
+
+            refreshTokenRepository.Delete(refreshToken);
+            await unitOfWork.CommitAsync();
+
+
+            return ServiceResult.Success(HttpStatusCode.OK);
         }
     }
 }

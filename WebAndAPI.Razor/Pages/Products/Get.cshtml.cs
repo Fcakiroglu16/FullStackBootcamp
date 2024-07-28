@@ -4,6 +4,7 @@ using WebAndAPI.Razor.Pages.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {
+    [Authorize]
     public class GetModel(ProductService productService) : BasePageModel
     {
         public ProductViewModel? Product { get; set; }

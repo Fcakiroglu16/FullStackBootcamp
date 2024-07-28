@@ -27,11 +27,16 @@ namespace MVC.API.Controllers
         [AllowAnonymous]
         [HttpPost("SignInWithClientCredential")]
         public IActionResult SignInWithClientCredential(ClientCredentialRequestDto request) =>
-            CreateResult(tokenService.GetTokenWithClientCredential(request));
+            CreateResult(tokenService.GetTokenWithClientCredentialAsync(request));
 
 
         [HttpPost("AddRoleToUser/{userId:guid}/{roleName}")]
         public async Task<IActionResult> AddRoleToUser(Guid userId, string roleName) =>
             CreateResult(await userService.AddRoleToUser(userId, roleName));
+
+
+        [Authorize]
+        [HttpGet("SignOut")]
+        public async Task<IActionResult> SignOut() => CreateResult(await tokenService.SignOutAsync());
     }
 }

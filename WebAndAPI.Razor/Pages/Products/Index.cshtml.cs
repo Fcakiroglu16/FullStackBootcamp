@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAndAPI.Razor.Pages.Products.Services;
 using WebAndAPI.Razor.Pages.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {
+    [Authorize]
     public class IndexModel(ProductService productService) : BasePageModel
     {
         public List<ProductViewModel>? Products { get; set; }

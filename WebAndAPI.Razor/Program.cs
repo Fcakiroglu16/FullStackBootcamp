@@ -28,12 +28,12 @@ builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<ProductService>();
 
 builder.Services.AddScoped<ClientCredentialHandler>();
-
+builder.Services.AddScoped<ResourceOwnerHandler>();
 builder.Services.AddHttpClient<ProductService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();
     options.BaseAddress = new Uri(backendOptions!.BaseUrl);
-});
+}).AddHttpMessageHandler<ResourceOwnerHandler>();
 builder.Services.AddHttpClient<CommonService>(options =>
 {
     var backendOptions = builder.Configuration.GetSection(BackendOptions.Backend).Get<BackendOptions>();

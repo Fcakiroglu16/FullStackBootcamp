@@ -75,7 +75,7 @@ namespace MVC.Service.Identities
             var roles = await userManager.GetRolesAsync(hasUser);
 
 
-            var tokenResponse = await tokenService.GetTokenWithResourceOwner(hasUser, roles.ToList());
+            var tokenResponse = await tokenService.GetTokenWithResourceOwnerAsync(hasUser, roles.ToList());
 
 
             if (!tokenResponse.IsSuccess)

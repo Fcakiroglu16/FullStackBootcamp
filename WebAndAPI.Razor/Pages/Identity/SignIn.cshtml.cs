@@ -7,7 +7,7 @@ using WebAndAPI.Razor.Pages.Identity.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Identity
 {
-    public class SignInModel(IdentityService identityService) : PageModel
+    public class SignInModel(IdentityService identityService, TokenService tokenService) : PageModel
     {
         [BindProperty] public SignInViewModel Model { get; set; } = new SignInViewModel(); //SignInViewModel.Empty();
 
@@ -45,8 +45,8 @@ namespace WebAndAPI.Razor.Pages.Identity
 
         public async Task<IActionResult> OnGetLogOut(int id)
         {
+            await identityService.SignOutAsync();
             await HttpContext.SignOutAsync();
-
 
             return RedirectToPage("/Index");
             //log out

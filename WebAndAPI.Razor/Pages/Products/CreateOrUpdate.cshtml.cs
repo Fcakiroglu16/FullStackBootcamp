@@ -6,7 +6,7 @@ using WebAndAPI.Razor.Pages.Products.ViewModels;
 
 namespace WebAndAPI.Razor.Pages.Products
 {
-    [Authorize(Roles = "editor2")]
+    [Authorize(Roles = "editor")]
     public class CreateOrUpdateModel(ProductService productService, IDataProtectionProvider dataProtectionProvider)
         : BasePageModel
     {
