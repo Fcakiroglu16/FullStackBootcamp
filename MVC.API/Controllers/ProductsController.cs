@@ -1,13 +1,10 @@
-﻿using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Service.Products;
 using MVC.Service.Products.DTOs;
 
 namespace MVC.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController(IProductService productService) : CustomControllerBase
