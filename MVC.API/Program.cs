@@ -1,6 +1,5 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,9 +17,13 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
+using MVC.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddKeyedScoped<IHelper, ProductHelper>("productHelper");
+builder.Services.AddKeyedScoped<IHelper, StockHelper>("stockHelper");
 
 builder.Services.AddControllers(x =>
 {

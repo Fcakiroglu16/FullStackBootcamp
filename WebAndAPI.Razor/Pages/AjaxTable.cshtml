@@ -9,28 +9,73 @@
 
         $(document).ready(function () {
 
+            
+            $("#spinner").hide();
 
-            loadProductTable("kitaplar");
-            $("#select-category").val("kitaplar");
+            function getToken() {
+
+                let accessToken = '';
+                $.ajax({
+                    url: `ajaxtable?handler=token`,
+                    type: 'GET',
+                    dataType: 'json',
+                    async: false,
+                    success: function (response) {
+                        accessToken = response.token;
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                return accessToken
+                    ;
+
+
+
+            }
+          
+            var token = getToken();
+           
+
+            LoadSelectCategory(token);
+            loadProductTable(1);
+
 
             $("#select-category").change(function () {
+                let categoryId = $(this).val();
 
-
-                let categoryName = $(this).val();
-
-                loadProductTable(categoryName);
+                loadProductTable(categoryId);
 
             })
 
 
-            function loadProductTable(categoryName) {
+ 
+            function loadProductTable(categoryId) {
+
+                $("#spinner").show();
+
 
                 $.ajax({
-                    url: `https://localhost:7024/api/AjaxTable/${categoryName}`,
+                    url: `https://localhost:7024/api/Products/GetAllWithCategoryId/${categoryId}`,
                     type: 'GET',
                     dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+                    },
                     success: function (response) {
                         console.log(response);
+
+                  
+                        if (response.data.length == 0) {
+                            $('#table-product tbody').html("<div>ürün bulunamadı.</div>")
+
+
+
+                            var toast = new bootstrap.Toast($("#liveToast"))
+
+                            toast.show()
+                            return;
+                        }
 
                         let html = '';
                         $.each(response.data, function (index, item) {
@@ -42,37 +87,93 @@
                                             <td>${item.stock}</td>
                                           </tr>`;
                         });
+                        
+                    
                         $('#table-product tbody').html(html);
+                        
+
+
+                       
                     },
                     error: function (error) {
                         console.log(error);
+                    },
+                    complete: function () {
+
+                        $("#spinner").hide();
                     }
                 });
+            }    
+
+
+            function LoadSelectCategory(token) {
+
+
+
+
+                const url = "https://localhost:7024/api/AjaxTable/GetCategoryNameList";
+
+
+
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+                    },
+                    success: function (response) {
+                        console.log(response);
+
+                        
+
+                        let html = "";
+                        $.each(response.data, function (index, item) {
+
+                            html += `<option value="${item.id}">${item.name}</option>`;
+                        });
+                        $('#select-category').html(html);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        $("#select-category").val(1);
+                    }
+                });
+
+
+
+
+            
             }
-
-          
-
-    
         })
-
-
-
-
-
-
     </script>
     
     
     
 
 }
-
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" data-bs-autohide="true">
+        <div class="toast-header">
+            <strong class="me-auto">Bilgilendirme</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          ürün bulunamadı
+        </div>
+    </div>
+</div>
 <select id="select-category">
-    <option value="kalemler">kalemler</option>
-    <option value="kitaplar">kitaplar</option>
-    <option value="silgiler">silgiler</option>
+  
 </select>
-
+<div  class="d-flex justify-content-center my-4">
+    <div style="display: none;" id="spinner" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
 <table id="table-product" class="table table-striped table-bordered table-hover">
     <thead>
     <tr>

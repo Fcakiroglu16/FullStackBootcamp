@@ -1,13 +1,22 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MVC.API.Helpers;
+using MVC.Repository;
+using MVC.Repository.Categories;
 using MVC.Service;
+using MVC.Service.Categories;
 using MVC.Service.Products.DTOs;
 
 namespace MVC.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class AjaxTableController : ControllerBase
+    public class AjaxTableController(
+        IGenericRepository<Category> categoryRepository,
+        [FromKeyedServices("ProductHelper")] IHelper helper) : ControllerBase
     {
         private static readonly List<(string categoryName, List<ProductDto> products)> Products = new();
 
@@ -34,6 +43,17 @@ namespace MVC.API.Controllers
 
 
             return Ok(ServiceResult<List<ProductDto>>.Success(products, HttpStatusCode.OK));
+        }
+
+        [HttpGet("GetCategoryNameList")]
+        public async Task<IActionResult> GetCategoryNameList()
+        {
+            var categoryList = await categoryRepository.GetAll().ToListAsync();
+
+
+            var categoryListAsDto = categoryList.Select(x => new CategoryDto(x.Id, x.Name)).ToList();
+
+            return Ok(ServiceResult<List<CategoryDto>>.Success(categoryListAsDto, HttpStatusCode.OK));
         }
     }
 }

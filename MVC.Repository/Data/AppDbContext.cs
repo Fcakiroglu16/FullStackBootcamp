@@ -6,16 +6,23 @@ using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.JsonWebTokens;
+using MVC.Repository.Categories;
 
 namespace MVC.Repository.Data
 {
     public class AppDbContext
         : IdentityDbContext<AppUser, AppRole, Guid>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor contextAccessor) :
+        public AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor? contextAccessor) :
             base(options)
         {
             _contextAccessor = contextAccessor;
+
+
+            if (contextAccessor is null) return;
+
+
+            if (contextAccessor.HttpContext is null) return;
 
 
             if (contextAccessor.HttpContext!.User.IsUserAuthenticated())
@@ -30,6 +37,8 @@ namespace MVC.Repository.Data
         public Guid? UserId { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 

@@ -11,7 +11,7 @@ using MVC.Service.Products.DTOs;
 namespace MVC.Service.Products
 {
     public class ProductService(
-        IGenericRepository<Product> productRepository,
+        IProductRepository productRepository,
         IUnitOfWork unitOfWork,
         IMapper mapper,
         AppDbContext context,
@@ -28,6 +28,22 @@ namespace MVC.Service.Products
             var productListDto = mapper.Map<List<ProductDto>>(productList);
 
             return ServiceResult<List<ProductDto>>.Success(productListDto, HttpStatusCode.OK);
+        }
+
+
+        public async Task<ServiceResult<List<ProductDto>>> GetAllWithCategoryIdAsync(int categoryId)
+        {
+            var products = await productRepository.GetAllWithCategoryIdAsync(categoryId);
+
+            if (products is null)
+            {
+                return ServiceResult<List<ProductDto>>.Success(Enumerable.Empty<ProductDto>().ToList(),
+                    HttpStatusCode.OK);
+            }
+
+            var productListAsDto = mapper.Map<List<ProductDto>>(products);
+
+            return ServiceResult<List<ProductDto>>.Success(productListAsDto, HttpStatusCode.OK);
         }
 
 

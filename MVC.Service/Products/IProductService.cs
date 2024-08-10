@@ -14,4 +14,6 @@ public interface IProductService
     Task<ServiceResult> Delete(int id);
 
     Task<ServiceResult<List<ProductDto>>> GetAllByPaging(int page, int pageSize);
+
+    Task<ServiceResult<List<ProductDto>>> GetAllWithCategoryIdAsync(int categoryId);
 }

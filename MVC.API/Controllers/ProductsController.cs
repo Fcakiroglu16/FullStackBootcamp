@@ -1,14 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Service.Products;
 using MVC.Service.Products.DTOs;
 
 namespace MVC.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController(IProductService productService) : CustomControllerBase
     {
+        [HttpGet("GetAllWithCategoryId/{categoryId:int}")]
+        public async Task<IActionResult> GetAllWithCategoryId(int categoryId) =>
+            CreateResult(await productService.GetAllWithCategoryIdAsync(categoryId));
+
+
         #region Methot Types
 
         // Get => data almak

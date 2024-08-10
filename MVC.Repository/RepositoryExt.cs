@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Repository.Data;
 using MVC.Repository.Identities;
+using MVC.Repository.Products;
 
 namespace MVC.Repository
 {
@@ -14,7 +15,7 @@ namespace MVC.Repository
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddDbContext<AppDbContext>((sp, options) =>
             {
